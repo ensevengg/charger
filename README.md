@@ -38,3 +38,9 @@ answer (copied text decodes much faster than new prose).
 
 `./run.sh <session-id>` runs the Speedy Shopper prompt once and saves the reply to
 `logs/runs/<session-id>.md`.
+
+## Live dashboard
+
+http://127.0.0.1:8081/ shows each reply's TPS, the best and average, a per-reply chart,
+the streamed output, and a request table. It is served by the proxy over server-sent
+events. **Clear** hides earlier requests for a clean recording.

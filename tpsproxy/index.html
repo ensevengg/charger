@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live TPS</title>
+<style>
+  :root {
+    --bg: #0b0b0d; --panel: #131317; --line: #22222a; --text: #ececf1; --muted: #8a8a96;
+    --dim: #5a5a66; --accent: #ff7a2f; --accent-soft: rgba(255,122,47,.14); --ok: #3ddc97;
+    --mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+    --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: var(--sans); }
+  body { display: flex; flex-direction: column; gap: 16px; padding: 24px 28px; max-width: 1600px; margin: 0 auto; }
+
+  header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  h1 { font-size: 18px; font-weight: 600; margin: 0; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 13px; margin-top: 3px; }
+  .right { display: flex; align-items: center; gap: 10px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted);
+          border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-variant-numeric: tabular-nums; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); }
+  .pill.queued .dot { background: #e5b84a; animation: pulse 1.2s infinite; }
+  .pill.streaming { color: var(--text); border-color: var(--accent); }
+  .pill.streaming .dot { background: var(--accent); animation: pulse .6s infinite; }
+  @keyframes pulse { 50% { opacity: .3; } }
+  button { background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 8px;
+           padding: 6px 12px; font: inherit; font-size: 12px; cursor: pointer; }
+  button:hover { color: var(--text); border-color: var(--dim); }
+
+  .stats { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 12px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; min-width: 0; }
+  .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+  .value { font-size: 40px; font-weight: 600; letter-spacing: -.03em; margin-top: 8px; font-variant-numeric: tabular-nums; }
+  .value small { font-size: 15px; color: var(--muted); font-weight: 500; letter-spacing: 0; margin-left: 6px; }
+  .hero .value { font-size: 64px; line-height: 1; color: var(--text); }
+  .hero.live .value { color: var(--accent); }
+  .meta { font-size: 12px; color: var(--muted); margin-top: 10px; font-variant-numeric: tabular-nums; min-height: 1em; }
+
+  .chart { height: 150px; padding: 14px 20px 12px; }
+  .chart-head { display: flex; justify-content: space-between; }
+  #bars { display: flex; align-items: flex-end; gap: 4px; height: 96px; margin-top: 12px; }
+  .bar { flex: 1 1 0; max-width: 28px; min-width: 3px; background: #2c2c36; border-radius: 3px 3px 0 0; transition: height .4s; }
+  .bar.best { background: var(--accent); }
+  .bar.new { background: #4a4a58; }
+  .empty { color: var(--dim); font-size: 13px; align-self: center; margin: auto; }
+
+  .bottom { display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px; flex: 1; min-height: 320px; }
+  .panel { display: flex; flex-direction: column; padding: 0; overflow: hidden; }
+  .panel-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--line); }
+  #stream { flex: 1; overflow-y: auto; padding: 16px 20px; font-family: var(--mono); font-size: 13px; line-height: 1.6;
+            white-space: pre-wrap; word-break: break-word; }
+  #stream:empty::before { content: "Output appears here as Kimi streams. Grey = reasoning, orange = tool calls."; color: var(--dim); font-family: var(--sans); }
+  #stream .reasoning { color: var(--dim); }
+  #stream .content { color: var(--text); }
+  #stream .tool { color: var(--accent); }
+  #stream .sep { display: block; color: var(--dim); border-top: 1px dashed var(--line); margin: 12px 0 8px; padding-top: 6px; font-size: 11px; }
+
+  .table-wrap { flex: 1; overflow-y: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+  th { position: sticky; top: 0; background: var(--panel); text-align: right; font-weight: 500; color: var(--muted);
+       font-size: 11px; text-transform: uppercase; letter-spacing: .06em; padding: 10px 20px 10px 8px; border-bottom: 1px solid var(--line); }
+  td { text-align: right; padding: 9px 20px 9px 8px; border-bottom: 1px solid #1a1a20; color: var(--muted); }
+  th:first-child, td:first-child { text-align: left; padding-left: 20px; }
+  td.tps { color: var(--text); font-weight: 600; }
+  tr.best td.tps { color: var(--accent); }
+  tr.fresh { animation: fresh 1.5s ease-out; }
+  @keyframes fresh { from { background: var(--accent-soft); } }
+
+  @media (max-width: 900px) {
+    body { padding: 16px; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .bottom { grid-template-columns: 1fr; }
+    .hero .value { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Santa's Speedy Shopper</h1>
+      <div class="sub">Kimi K3.1 Pro on Cerebras · OpenClaw</div>
+    </div>
+    <div class="right">
+      <span id="status" class="pill"><span class="dot"></span><span id="status-text">Idle</span></span>
+      <button id="clear" title="Hide earlier requests (for a clean recording)">Clear</button>
+    </div>
+  </header>
+
+  <section class="stats">
+    <div class="card hero" id="hero">
+      <div class="label" id="hero-label">Last reply</div>
+      <div class="value"><span id="live-tps">–</span><small>tok/s</small></div>
+      <div class="meta" id="hero-meta"></div>
+    </div>
+    <div class="card"><div class="label">Best</div><div class="value"><span id="best">–</span><small>tok/s</small></div></div>
+    <div class="card"><div class="label">Requests</div><div class="value" id="count">0</div></div>
+    <div class="card"><div class="label">Output tokens</div><div class="value" id="tokens">0</div></div>
+  </section>
+
+  <section class="card chart">
+    <div class="chart-head"><span class="label">TPS per reply</span><span class="label" id="avg"></span></div>
+    <div id="bars"><span class="empty">Waiting for the first reply…</span></div>
+  </section>
+
+  <section class="bottom">
+    <div class="card panel">
+      <div class="panel-head"><span class="label">Live output</span><span class="label" id="stream-id"></span></div>
+      <div id="stream"></div>
+    </div>
+    <div class="card panel">
+      <div class="panel-head"><span class="label">Requests</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Time</th><th>Tokens</th><th>Decode</th><th>Queue</th><th>TPS</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const fmt = (n) => Math.round(n).toLocaleString();
+let cutoff = 0;
+try { cutoff = Number(localStorage.getItem("tps-cutoff")) || 0; } catch {}
+
+let recs = [];                 // finished replies
+let live = null;               // {id, start, first, chunks}
+let freshId = null;
+let ticker = null;
+
+function visible() { return recs.filter((r) => (r.ts || 0) >= cutoff); }
+
+function render() {
+  const v = visible();
+  const best = v.reduce((m, r) => (r.tps > (m?.tps ?? -1) ? r : m), null);
+  $("best").textContent = best ? fmt(best.tps) : "–";
+  $("count").textContent = v.length;
+  $("tokens").textContent = fmt(v.reduce((s, r) => s + r.out, 0));
+  $("avg").textContent = v.length ? `avg ${fmt(v.reduce((s, r) => s + r.tps, 0) / v.length)} tok/s` : "";
+
+  const bars = $("bars");
+  if (!v.length) { bars.innerHTML = '<span class="empty">Waiting for the first reply…</span>'; }
+  else {
+    const shown = v.slice(-80), max = Math.max(...shown.map((r) => r.tps));
+    bars.innerHTML = shown.map((r) => {
+      const cls = r === best ? "bar best" : r.id === freshId ? "bar new" : "bar";
+      return `<div class="${cls}" style="height:${Math.max(3, (r.tps / max) * 100)}%" title="#${r.id} · ${fmt(r.tps)} tok/s · ${r.out} tokens"></div>`;
+    }).join("");
+  }
+
+  $("rows").innerHTML = v.slice().reverse().map((r) => `
+    <tr class="${r === best ? "best" : ""} ${r.id === freshId ? "fresh" : ""}">
+      <td>${r.id ?? ""}</td><td>${r.t}</td><td>${fmt(r.out)}</td>
+      <td>${r.decode_s.toFixed(2)}s</td><td>${r.queue_s.toFixed(0)}s</td><td class="tps">${fmt(r.tps)}</td>
+    </tr>`).join("");
+
+  if (!live) {
+    const last = v[v.length - 1];
+    $("hero").classList.remove("live");
+    $("hero-label").textContent = "Last reply";
+    $("live-tps").textContent = last ? fmt(last.tps) : "–";
+    $("hero-meta").textContent = last ? `${fmt(last.out)} tokens in ${last.decode_s.toFixed(2)}s` : "";
+  }
+}
+
+function setStatus(kind, text) {
+  $("status").className = "pill " + kind;
+  $("status-text").textContent = text;
+}
+
+function tick() {
+  if (!live) return;
+  const now = Date.now() / 1000;
+  if (!live.first) { setStatus("queued", `Queued ${Math.floor(now - live.start)}s`); return; }
+  setStatus("streaming", "Streaming");
+  const span = live.lastT - live.first;
+  if (live.chunks > 1 && span > 0.05) {
+    $("live-tps").textContent = fmt((live.chunks - 1) / span);
+    $("hero-meta").textContent = `${fmt(live.chunks)} chunks · measuring…`;
+  }
+}
+
+function appendStream(parts) {
+  const s = $("stream");
+  const atBottom = s.scrollHeight - s.scrollTop - s.clientHeight < 40;
+  for (const k of ["reasoning", "tool", "content"]) {
+    if (!parts[k]) continue;
+    const last = s.lastElementChild;
+    if (last && last.classList.contains(k)) last.textContent += parts[k];
+    else { const el = document.createElement("span"); el.className = k; el.textContent = parts[k]; s.appendChild(el); }
+  }
+  // keep the DOM small during long sessions
+  while (s.textContent.length > 60000 && s.firstChild) s.removeChild(s.firstChild);
+  if (atBottom) s.scrollTop = s.scrollHeight;
+}
+
+function onEvent(ev) {
+  if (ev.type === "history") { recs = ev.items; render(); return; }
+  if (ev.type === "start") {
+    live = { id: ev.id, start: ev.t, first: null, lastT: null, chunks: 0 };
+    $("hero").classList.add("live");
+    $("hero-label").textContent = "Live";
+    $("live-tps").textContent = "–";
+    $("hero-meta").textContent = "Waiting for first token…";
+    $("stream-id").textContent = `reply #${ev.id}`;
+    const s = $("stream");
+    if (s.childElementCount) { const sep = document.createElement("span"); sep.className = "sep"; sep.textContent = `reply #${ev.id}`; s.appendChild(sep); }
+    clearInterval(ticker); ticker = setInterval(tick, 100); tick();
+    return;
+  }
+  if (!live) return;
+  if (ev.type === "first" && ev.id === live.id) { live.first = ev.t; live.lastT = ev.t; tick(); }
+  if (ev.type === "delta" && ev.id === live.id) { live.chunks = ev.chunks; live.lastT = ev.t; appendStream(ev.parts); }
+  if (ev.type === "delta" && ev.id !== live.id) appendStream(ev.parts);
+  if (ev.type === "done") {
+    recs.push(ev.rec); freshId = ev.rec.id;
+    if (ev.rec.id === live.id) { live = null; clearInterval(ticker); setStatus("", "Idle"); }
+    render();
+  }
+  if (ev.type === "fail" && ev.id === live.id) { live = null; clearInterval(ticker); setStatus("", "Request failed"); render(); }
+}
+
+function connect() {
+  const es = new EventSource("/events");
+  es.onmessage = (m) => onEvent(JSON.parse(m.data));
+  es.onerror = () => { setStatus("", "Reconnecting…"); };
+  es.onopen = () => { if (!live) setStatus("", "Idle"); };
+}
+
+$("clear").onclick = () => {
+  cutoff = Date.now() / 1000;
+  try { localStorage.setItem("tps-cutoff", String(cutoff)); } catch {}
+  $("stream").innerHTML = ""; freshId = null; render();
+};
+
+connect();
+</script>
+</body>
+</html>

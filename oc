@@ -4,7 +4,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 case "${1:-}" in
-  up)    docker compose up -d && echo "Control UI: http://127.0.0.1:18789/" ;;
+  up)    docker compose up -d && echo "Control UI: http://127.0.0.1:18789/  ·  TPS dashboard: http://127.0.0.1:8081/" ;;
   down)  docker compose down ;;
   logs)  docker compose logs -f --tail=100 ;;
   shell) docker compose exec openclaw bash ;;
