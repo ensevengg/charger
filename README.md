@@ -27,3 +27,9 @@ the bounty formula `(output tokens - 1) / (last token time - first token time)`.
 `web_search` uses a self-hosted SearXNG container (no API key). Before the first
 `./oc up`, copy `searxng/settings.example.yml` to `searxng/settings.yml` and set a random
 `secret_key`.
+
+## Speed-run instructions
+
+`speedrun.md` is appended to the agent's `state/workspace/AGENTS.md`. It makes the agent
+batch its tool calls into a few replies and copy product-page text verbatim in the final
+answer (copied text decodes much faster than new prose).
