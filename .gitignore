@@ -2,3 +2,4 @@
 state/
 logs/
 searxng/settings.yml
+__pycache__/
