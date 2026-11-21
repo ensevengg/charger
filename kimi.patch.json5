@@ -1,11 +1,15 @@
 // Applied with: ./oc config patch --stdin < kimi.patch.json5
+// reasoning_effort "low" + temperature 0.6 measured fastest for long verbatim answers
+// (low cuts reasoning ~10x; "none"/off is rejected by Cerebras for this model).
 {
   agents: { defaults: {
     model: { primary: "cerebras/moonshotai-kimi-k3.1-pro-trial" },
-    models: { "cerebras/moonshotai-kimi-k3.1-pro-trial": { alias: "Kimi K3.1 Pro" } },
+    models: { "cerebras/moonshotai-kimi-k3.1-pro-trial": { alias: "Kimi K3.1 Pro", params: { temperature: 0.6 } } },
+    thinkingDefault: "low",
   } },
   models: { providers: { cerebras: { models: [
     { id: "moonshotai-kimi-k3.1-pro-trial", name: "Kimi K3.1 Pro (Cerebras)",
-      reasoning: true, input: ["text"], contextWindow: 262144, maxTokens: 32768 },
+      reasoning: true, input: ["text"], contextWindow: 262144, maxTokens: 32768,
+      thinkingLevelMap: { low: "low", medium: "medium", high: "high" } },
   ] } } },
 }
