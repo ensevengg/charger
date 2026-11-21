@@ -3,3 +3,11 @@ use_default_settings: true
 server: { secret_key: "CHANGE_ME", limiter: false, image_proxy: false }
 search: { safe_search: 0, formats: [html, json] }
 outgoing: { request_timeout: 6.0, retries: 1 }
+# More engines spread the load so no single one rate-limits us.
+engines:
+  - { name: bing, disabled: false }
+  - { name: brave, disabled: false }
+  - { name: startpage, disabled: false }
+  - { name: mojeek, disabled: false }
+  - { name: yahoo, disabled: false }
+  - { name: qwant, disabled: false }
