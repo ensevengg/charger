@@ -1,0 +1,3 @@
+// Speed-run tool set: only search + fetch, no tool_search indirection.
+// Applied with: ./oc config patch --stdin < tools.patch.json5
+{ tools: { allow: ["web_search", "web_fetch"], toolSearch: false, codeMode: null } }
