@@ -88,6 +88,13 @@ class H(http.server.BaseHTTPRequestHandler):
         hdrs["Accept-Encoding"] = "identity"
         is_chat = method == "POST" and self.path.endswith("/chat/completions")
         rid = next(_ids)
+        sent = {}
+        if is_chat:
+            try:
+                req = json.loads(body)
+                sent = {k: req[k] for k in ("reasoning_effort", "temperature", "top_p", "max_completion_tokens", "max_tokens") if k in req}
+            except ValueError:
+                pass
         t0 = time.time()
         if is_chat:
             emit({"type": "start", "id": rid, "t": t0})
@@ -162,7 +169,7 @@ class H(http.server.BaseHTTPRequestHandler):
             rec = {"id": rid, "t": time.strftime("%H:%M:%S"), "ts": t0, "model": model, "out": n,
                    "reasoning": usage.get("completion_tokens_details", {}).get("reasoning_tokens"),
                    "tps": round((n - 1) / (last - first), 1), "decode_s": round(last - first, 2),
-                   "ttft_s": round(first - t0, 1), "queue_s": round((tinfo or {}).get("queue_time", 0), 1)}
+                   "ttft_s": round(first - t0, 1), "queue_s": round((tinfo or {}).get("queue_time", 0), 1), "sent": sent}
             print(json.dumps(rec), flush=True)
             with open(LOG, "a") as f:
                 f.write(json.dumps(rec) + "\n")
