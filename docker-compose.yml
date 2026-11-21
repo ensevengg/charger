@@ -20,3 +20,15 @@ services:
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
+    depends_on: [tpsproxy]
+
+  # Logs real per-reply TPS (OpenClaw -> tpsproxy -> api.cerebras.ai) to ./logs/tps.jsonl.
+  tpsproxy:
+    image: python:3.13-slim
+    container_name: tpsproxy
+    user: "1000:1000"
+    command: ["python", "-u", "/app/proxy.py"]
+    volumes:
+      - ./tpsproxy:/app:ro
+      - ./logs:/logs
+    restart: unless-stopped
