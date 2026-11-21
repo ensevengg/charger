@@ -66,6 +66,8 @@ def fetched_pages(io):
 
 
 def norm(s):
+    # The trajectory export redacts parts of URL query strings, so compare URLs without them.
+    s = re.sub(r"(https?://[^\s?)]+)\?[^\s)]*", r"\1", s)
     return re.sub(r"\s+", " ", s).strip()
 
 
