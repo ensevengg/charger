@@ -1,3 +1,4 @@
 .env
 state/
 logs/
+searxng/settings.yml

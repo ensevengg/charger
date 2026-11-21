@@ -20,7 +20,7 @@ services:
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
-    depends_on: [tpsproxy]
+    depends_on: [tpsproxy, searxng]
 
   # Logs real per-reply TPS (OpenClaw -> tpsproxy -> api.cerebras.ai) to ./logs/tps.jsonl.
   tpsproxy:
@@ -31,4 +31,12 @@ services:
     volumes:
       - ./tpsproxy:/app:ro
       - ./logs:/logs
+    restart: unless-stopped
+
+  # Keyless meta-search backend for OpenClaw's web_search (internal only, no host port).
+  searxng:
+    image: searxng/searxng:2026.11.21-c6ee3e9fd
+    container_name: searxng
+    volumes:
+      - ./searxng/settings.yml:/etc/searxng/settings.yml:ro
     restart: unless-stopped
