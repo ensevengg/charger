@@ -17,7 +17,8 @@ replies contain only tool calls.
 3. If any slot is unusable or duplicates another, take that slot's next `walmart.com/ip/` result
    and fetch all replacements in one parallel reply. If a slot has no usable results left, search
    that slot's backup query (all such slots in one parallel reply). At most two replacement rounds.
-4. Final reply: start immediately with `## Gift 1`, slots in order, no preamble or closing note.
+4. Final reply: do not think; output immediately, starting with `## Gift 1`, slots in order,
+   no preamble or closing note.
    For each slot, exactly:
 
    ## Gift N
