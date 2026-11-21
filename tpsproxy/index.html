@@ -69,6 +69,8 @@
   tr.fresh { animation: fresh 1.5s ease-out; }
   @keyframes fresh { from { background: var(--accent-soft); } }
 
+  .rec #clear { display: none; }
+
   @media (max-width: 900px) {
     body { padding: 16px; }
     .stats { grid-template-columns: 1fr 1fr; }
@@ -124,8 +126,12 @@
 <script>
 const $ = (id) => document.getElementById(id);
 const fmt = (n) => Math.round(n).toLocaleString();
+const qs = new URLSearchParams(location.search);
 let cutoff = 0;
 try { cutoff = Number(localStorage.getItem("tps-cutoff")) || 0; } catch {}
+if (qs.has("since")) cutoff = Number(qs.get("since")) || 0;   // recorder: show only this run
+if (qs.has("rec")) document.documentElement.classList.add("rec");
+if (qs.get("run")) document.querySelector(".sub").textContent += " · " + qs.get("run");
 
 let recs = [];                 // finished replies
 let live = null;               // {id, start, first, chunks}
