@@ -1,0 +1,22 @@
+# Throwaway OpenClaw sandbox for the Cerebras x Kimi Speed Bounty.
+# All state lives in ./state; `./oc nuke` removes container + state.
+services:
+  openclaw:
+    image: ${OPENCLAW_IMAGE:-ghcr.io/openclaw/openclaw:2026.11.6-browser}
+    container_name: openclaw
+    init: false            # image already runs tini
+    env_file: .env
+    environment:
+      OPENCLAW_CONFIG_PATH: /home/node/.openclaw/openclaw.json
+      OPENCLAW_WORKSPACE_DIR: /home/node/.openclaw/workspace
+      OPENCLAW_BROWSER_HEADLESS: "1"
+      TZ: Asia/Kolkata
+    command: ["node", "openclaw.mjs", "gateway", "--bind", "lan", "--port", "18789"]
+    ports:
+      - "127.0.0.1:18789:18789"   # Control UI, localhost only
+    volumes:
+      - ./state:/home/node/.openclaw
+    shm_size: 1gb                 # Chromium needs more than the 64MB default
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Wrapper: run OpenClaw CLI inside the container.
+#   ./oc up | down | logs | shell | nuke | <any openclaw args>
+set -euo pipefail
+cd "$(dirname "$0")"
+case "${1:-}" in
+  up)    docker compose up -d && echo "Control UI: http://127.0.0.1:18789/" ;;
+  down)  docker compose down ;;
+  logs)  docker compose logs -f --tail=100 ;;
+  shell) docker compose exec openclaw bash ;;
+  nuke)  docker compose down --rmi all -v && rm -rf state && echo "OpenClaw removed." ;;
+  *)     tty=(-T); [ -t 0 ] && [ -t 1 ] && tty=(-it)
+         docker compose exec "${tty[@]}" openclaw node openclaw.mjs "$@" ;;
+esac

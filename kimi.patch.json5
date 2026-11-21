@@ -1,0 +1,11 @@
+// Applied with: ./oc config patch --stdin < kimi.patch.json5
+{
+  agents: { defaults: {
+    model: { primary: "cerebras/moonshotai-kimi-k3.1-pro-trial" },
+    models: { "cerebras/moonshotai-kimi-k3.1-pro-trial": { alias: "Kimi K3.1 Pro" } },
+  } },
+  models: { providers: { cerebras: { models: [
+    { id: "moonshotai-kimi-k3.1-pro-trial", name: "Kimi K3.1 Pro (Cerebras)",
+      reasoning: true, input: ["text"], contextWindow: 262144, maxTokens: 32768 },
+  ] } } },
+}
