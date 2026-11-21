@@ -71,6 +71,18 @@
 
   .rec #clear { display: none; }
 
+  .side { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+  .side .panel { flex: 1; min-height: 0; }
+  #gifts-card { flex: 0 0 auto; }
+  #gifts { list-style: none; margin: 0; padding: 6px 0; counter-reset: g; }
+  #gifts li { display: grid; grid-template-columns: 22px 1fr auto; column-gap: 10px; padding: 9px 20px; border-bottom: 1px solid #1a1a20; counter-increment: g; animation: fresh 1.2s ease-out; }
+  #gifts li::before { content: counter(g); color: var(--dim); font-variant-numeric: tabular-nums; }
+  #gifts .name { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #gifts .price { font-size: 13px; color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
+  #gifts .url { grid-column: 2 / 4; font-family: var(--mono); font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: none; }
+  #gifts .empty-row { display: block; color: var(--dim); font-size: 13px; animation: none; }
+  #gifts .empty-row::before { content: none; }
+
   @media (max-width: 900px) {
     body { padding: 16px; }
     .stats { grid-template-columns: 1fr 1fr; }
@@ -112,6 +124,11 @@
       <div class="panel-head"><span class="label">Live output</span><span class="label" id="stream-id"></span></div>
       <div id="stream"></div>
     </div>
+    <div class="side">
+    <div class="card panel" id="gifts-card">
+      <div class="panel-head"><span class="label">Gifts found</span><span class="label" id="gift-count"></span></div>
+      <ul id="gifts"><li class="empty-row">Products appear here as the final answer streams.</li></ul>
+    </div>
     <div class="card panel">
       <div class="panel-head"><span class="label">Requests</span></div>
       <div class="table-wrap">
@@ -120,6 +137,7 @@
           <tbody id="rows"></tbody>
         </table>
       </div>
+    </div>
     </div>
   </section>
 
@@ -190,9 +208,30 @@ function tick() {
   }
 }
 
+let stick = true;
+$("stream").addEventListener("scroll", () => {
+  const s = $("stream"); stick = s.scrollHeight - s.scrollTop - s.clientHeight < 60;
+});
+
+// Parse "Name: / Price: / URL:" lines of the streamed final answer into the gifts list.
+let replyText = "";
+function renderGifts() {
+  const gifts = [];
+  for (const sec of replyText.split(/^## Gift \d+\s*$/m).slice(1)) {
+    const get = (k) => (sec.match(new RegExp("^" + k + ":\\s*(.+)$", "m")) || [])[1];
+    const name = get("Name"), price = get("Price"), url = get("URL");
+    if (name && url && /^https?:\/\/\S+$/.test(url.trim())) gifts.push({ name, price: price || "", url: url.trim() });
+  }
+  if (!gifts.length) return;
+  const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  $("gifts").innerHTML = gifts.map((g) =>
+    `<li><span class="name" title="${esc(g.name)}">${esc(g.name)}</span><span class="price">${esc(g.price)}</span>` +
+    `<a class="url" href="${esc(g.url)}" target="_blank" rel="noopener">${esc(g.url)}</a></li>`).join("");
+  $("gift-count").textContent = `${gifts.length} / 5`;
+}
+
 function appendStream(parts) {
   const s = $("stream");
-  const atBottom = s.scrollHeight - s.scrollTop - s.clientHeight < 40;
   for (const k of ["reasoning", "tool", "content"]) {
     if (!parts[k]) continue;
     const last = s.lastElementChild;
@@ -201,7 +240,8 @@ function appendStream(parts) {
   }
   // keep the DOM small during long sessions
   while (s.textContent.length > 60000 && s.firstChild) s.removeChild(s.firstChild);
-  if (atBottom) s.scrollTop = s.scrollHeight;
+  if (stick) s.scrollTop = s.scrollHeight;
+  if (parts.content) { replyText += parts.content; renderGifts(); }
 }
 
 function onEvent(ev) {
@@ -214,7 +254,9 @@ function onEvent(ev) {
     $("hero-meta").textContent = "Waiting for first token…";
     $("stream-id").textContent = `reply #${ev.id}`;
     const s = $("stream");
+    replyText = "";
     if (s.childElementCount) { const sep = document.createElement("span"); sep.className = "sep"; sep.textContent = `reply #${ev.id}`; s.appendChild(sep); }
+    if (stick) s.scrollTop = s.scrollHeight;
     clearInterval(ticker); ticker = setInterval(tick, 100); tick();
     return;
   }
