@@ -22,16 +22,17 @@ replies contain only tool calls.
    For each slot, exactly:
 
    ## Gift N
-   Name: <product title copied exactly from this slot's fetch>
+   Name: <the fetch result's `title` field, copied exactly>
    Retailer: Walmart
    Price: <the text right after `Current price is`, copied exactly>
    URL: <the exact URL you passed to this slot's successful web_fetch>
    Product page excerpt
    > <verbatim text from that fetch>
 
-   In the excerpt, copy the title, every description, feature and specification line, and the
-   price lines, in page order, each line prefixed with `> `. Copy everything available; do not
-   summarize, shorten, pad, or insert ellipses.
+   The excerpt is the fetch result's entire page text, every line from first to last, copied
+   verbatim with `> ` before each line. Do not choose or skip lines; copy all of it, except the
+   wrapper lines that are not page text: `<<<EXTERNAL_UNTRUSTED_CONTENT ...>>>`,
+   `<<<END_EXTERNAL_UNTRUSTED_CONTENT ...>>>`, `Source: Web Fetch` and the `---` after it.
 5. End with a table `| Name | Retailer | Price | URL |` repeating each slot's fields exactly. Nothing after it.
 
 Evidence rules (never break these):
