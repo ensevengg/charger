@@ -180,6 +180,7 @@ class H(http.server.BaseHTTPRequestHandler):
             n = usage["completion_tokens"]
             rec = {"id": rid, "t": time.strftime("%H:%M:%S"), "ts": t0, "model": model, "out": n,
                    "reasoning": usage.get("completion_tokens_details", {}).get("reasoning_tokens"),
+                   "prompt": usage.get("prompt_tokens"),
                    "tps": round((n - 1) / (last - first), 1), "decode_s": round(last - first, 2),
                    "ttft_s": round(first - t0, 1), "queue_s": round((tinfo or {}).get("queue_time", 0), 1), "sent": sent}
             print(json.dumps(rec), flush=True)
