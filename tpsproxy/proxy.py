@@ -42,6 +42,18 @@ def history(limit=300):
         return []
 
 
+class _Buffered:
+    """A response whose body was already read, replayed line by line."""
+    def __init__(self, r, body):
+        self.status, self._h, self._lines = r.status, r.getheaders(), body.splitlines(keepends=True)
+
+    def getheaders(self):
+        return self._h
+
+    def readline(self):
+        return self._lines.pop(0) if self._lines else b""
+
+
 class H(http.server.BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.0"
 
@@ -101,20 +113,33 @@ class H(http.server.BaseHTTPRequestHandler):
         if is_chat:
             emit({"type": "start", "id": rid, "t": t0})
         # Retry connection failures (DNS blips, network unreachable): nothing has been sent yet.
-        for attempt in range(5):
+        busy = 0
+        attempt = 0
+        while True:
             try:
                 c = http.client.HTTPSConnection(UP, timeout=600)
                 c.request(method, self.path, body=body, headers=hdrs)
                 r = c.getresponse()
+                # Cerebras answers 429 "queue_exceeded" when it is overloaded (not our rate limit).
+                # Wait it out here instead of letting the client give up on the run.
+                if r.status == 429 and busy < 60:
+                    err = r.read()
+                    if b"queue_exceeded" in err:
+                        busy += 1
+                        print(json.dumps({"upstream_busy": busy}), flush=True)
+                        time.sleep(4)
+                        continue
+                    r = _Buffered(r, err)
                 break
             except OSError as e:
-                print(json.dumps({"upstream_retry": attempt + 1, "error": str(e)[:120]}), flush=True)
-                if attempt == 4:
+                attempt += 1
+                print(json.dumps({"upstream_retry": attempt, "error": str(e)[:120]}), flush=True)
+                if attempt == 5:
                     if is_chat:
                         emit({"type": "fail", "id": rid, "status": 502})
                     self.send_error(502, "upstream unreachable")
                     return
-                time.sleep(2 * (attempt + 1))
+                time.sleep(2 * attempt)
         self.send_response(r.status)
         for k, v in r.getheaders():
             if k.lower() not in ("transfer-encoding", "content-length", "connection", "content-encoding"):
