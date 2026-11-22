@@ -121,8 +121,8 @@ def search_hits(io):
         except ValueError:
             continue
         for r in results:
-            title = re.sub(r"<<<[^>]*>>>|Source: Web Search|^\s*---\s*$", "", r.get("title") or "", flags=re.M)
-            hits.setdefault(r.get("url"), title.strip())
+            clean = lambda t: re.sub(r"<<<[^>]*>>>|Source: Web Search|^\s*---\s*$", "", t or "", flags=re.M).strip()
+            hits.setdefault(r.get("url"), clean(r.get("title")) + "\n" + clean(r.get("snippet")))
     return hits
 
 
@@ -166,7 +166,9 @@ def main():
             url = (re.findall(r"https?://[^\s)\]|>]+", sec) or [None])[0]
             name = next((l[5:].strip() for l in sec.splitlines() if l.lower().startswith("name:")), "")
             checks = {"url": bool(url) and url.startswith("https://www.walmart.com/ip/") and url in hits,
-                      "name": bool(name) and norm(name) == norm(hits.get(url, "")),
+                      "name": bool(name) and norm(name) == norm(hits.get(url, "").split("\n")[0]),
+                      "snippet": all(norm(l[8:]) in norm(hits.get(url, "")) for l in sec.splitlines()
+                                     if l.lower().startswith("snippet:")),
                       "unique": url not in seen}
             seen.add(url)
             ok_all &= all(checks.values())

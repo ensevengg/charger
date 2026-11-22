@@ -20,10 +20,11 @@ or deliberation. Tool-call replies contain only tool calls.
    Name: <that result's title text, copied exactly>
    Retailer: Walmart
    URL: <that result's url, copied exactly>
+   Snippet: <that result's snippet text, copied exactly>
 
-   The title text is the line between `---` and `<<<END_EXTERNAL_UNTRUSTED_CONTENT`. Nothing after Gift 5.
+   The title and snippet text is what sits between `---` and `<<<END_EXTERNAL_UNTRUSTED_CONTENT`. Nothing after Gift 5.
 
 Evidence rules (never break these):
-- Every name and URL comes character-for-character from that slot's own search result.
+- Every name, URL and snippet comes character-for-character from that slot's own search result.
 - Never build, guess, repair, or shorten a URL or product ID. Never fill a slot from memory.
 - If a slot has no Walmart product result even after its backup, output only the other slots and say how many failed.
