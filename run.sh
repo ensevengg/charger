@@ -6,6 +6,8 @@
 #   logs/videos/<id>/full.mp4    whole run;  demo.mp4  queue waits cut out
 #   logs/tps.jsonl               per-reply TPS
 set -euo pipefail; cd "$(dirname "$0")"; id=${1:?session id}
+# One run at a time: replies are matched to runs by time, and the dashboard shows one run.
+exec 9>logs/.run.lock; flock -n 9 || { echo "another run is in progress"; exit 1; }
 IMAGE=${OPENCLAW_IMAGE:-ghcr.io/openclaw/openclaw:2026.11.6-browser}
 mkdir -p logs/runs "logs/videos/$id"
 since=$(date +%s.%N)
