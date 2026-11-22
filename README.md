@@ -1,5 +1,7 @@
 # charger: OpenClaw sandbox for the Cerebras × Kimi Speed Bounty
 
+**Speed Bounty entry: 1,487 TPS mean.** Video, gifts and details: [`submission/`](submission/).
+
 Everything OpenClaw touches lives in this container and `./state` (gitignored).
 
 ```sh
