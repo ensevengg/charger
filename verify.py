@@ -161,6 +161,18 @@ def main():
     hits, seen = search_hits(io), set()
     for i, sec in enumerate(sections, 1):
         sec = sec.split("\n| Name |")[0]  # drop trailing summary table
+        blocks = {norm(re.sub(r"<<<[^>]*>>>|Source: [^\n]*|^\s*---\s*$", "", t, flags=re.M)).split("## Gift ", 1)[-1]
+                  for n, _, t in io if n and n.endswith("gift_search")}
+        if blocks:
+            # gift_search format (speedrun4.md): the section must be one tool-returned block, verbatim.
+            url = (re.findall(r"https?://[^\s)\]|>]+", sec) or [None])[0]
+            body = norm(f"{i}\n" + sec)
+            checks = {"block": body in blocks, "url": bool(url) and url.startswith("https://www.walmart.com/ip/"),
+                      "unique": url not in seen}
+            seen.add(url)
+            ok_all &= all(checks.values())
+            print(f"Gift {i}: " + "  ".join(f"{k} {'✓' if v else '✗'}" for k, v in checks.items()) + f"  {url}")
+            continue
         if not any(l.startswith(">") or l.lower().startswith("price:") for l in sec.splitlines()):
             # 2-reply format (speedrun2.md): name and URL must match one live search result exactly.
             url = (re.findall(r"https?://[^\s)\]|>]+", sec) or [None])[0]
