@@ -37,8 +37,6 @@ cp searxng/settings.example.yml searxng/settings.yml   # set a random secret_key
 ./loop.sh 20            # many runs
 ```
 
-Live dashboard: http://127.0.0.1:8081/
-
 ## What's where
 
 | Path | What it is |
