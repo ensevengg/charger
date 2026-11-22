@@ -31,6 +31,51 @@ def export(session_id):
             return [json.loads(l) for l in f if l.strip()]
 
 
+def db_messages(session_id):
+    """The session's transcript messages, read from the agent's session database. Unlike the
+    trajectory export, nothing is redacted (the export can replace a long reply or page with
+    "[Malformed diagnostic JSON redacted]"). None if the session isn't there."""
+    import shutil, sqlite3
+    from compression import zstd
+    here = os.path.dirname(os.path.abspath(__file__))
+    for state in ("state-patched", "state"):
+        db = f"{here}/{state}/agents/main/agent/openclaw-agent.sqlite"
+        if not os.path.exists(db):
+            continue
+        with tempfile.TemporaryDirectory() as tmp:
+            for suffix in ("", "-wal", "-shm"):
+                if os.path.exists(db + suffix):
+                    shutil.copy(db + suffix, f"{tmp}/a.sqlite{suffix}")
+            c = sqlite3.connect(f"{tmp}/a.sqlite")
+            row = c.execute("select value_json from session_entry_snapshots where session_key=? and field='systemPromptReport'",
+                            (f"agent:main:explicit:{session_id}",)).fetchone()
+            if not row:
+                continue
+            sess = json.loads(row[0])["sessionId"]
+            out = []
+            for raw, z in c.execute("select event_json, event_zstd from transcript_events where session_id=? order by seq", (sess,)):
+                m = json.loads(raw or zstd.decompress(z).decode()).get("message")
+                if m:
+                    out.append(m)
+            return out
+    return None
+
+
+def to_events(msgs):
+    """Shape raw transcript messages like trajectory-export events."""
+    ev = []
+    for m in msgs:
+        if m.get("role") == "assistant":
+            ev.append({"source": "transcript", "type": "assistant.message", "data": {"message": m}})
+            for c in m.get("content", []):
+                if c.get("type") == "toolCall":
+                    ev.append({"source": "transcript", "type": "tool.call",
+                               "data": {"toolCallId": c.get("id"), "name": c.get("name"), "arguments": c.get("arguments")}})
+        elif m.get("role") == "toolResult":
+            ev.append({"source": "transcript", "type": "tool.result", "data": {"message": m}})
+    return ev
+
+
 def tool_io(events):
     """Return [(name, args, result_text)] in the order results arrived."""
     calls, out = {}, []
@@ -74,7 +119,8 @@ def norm(s):
 def main():
     sid = sys.argv[1]
     here = os.path.dirname(os.path.abspath(__file__))
-    events = export(sid)
+    msgs = db_messages(sid)
+    events = to_events(msgs) if msgs else export(sid)
     path = sys.argv[2] if len(sys.argv) > 2 else f"{here}/logs/runs/{sid}.md"
     msgs = [e["data"]["message"] for e in events
             if e.get("source") == "transcript" and e["type"] == "assistant.message"]
