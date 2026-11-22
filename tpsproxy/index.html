@@ -30,7 +30,8 @@
            padding: 6px 12px; font: inherit; font-size: 12px; cursor: pointer; }
   button:hover { color: var(--text); border-color: var(--dim); }
 
-  .stats { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 12px; }
+  .stats { display: grid; grid-template-columns: 1.4fr 1.3fr 1fr 1fr 1fr; gap: 12px; }
+  #mean { color: var(--accent); }
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; min-width: 0; }
   .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
   .value { font-size: 40px; font-weight: 600; letter-spacing: -.03em; margin-top: 8px; font-variant-numeric: tabular-nums; }
@@ -109,6 +110,7 @@
       <div class="value"><span id="live-tps">–</span><small>tok/s</small></div>
       <div class="meta" id="hero-meta"></div>
     </div>
+    <div class="card"><div class="label">Mean · server</div><div class="value"><span id="mean">–</span><small>tok/s</small></div><div class="meta" id="mean-meta"></div></div>
     <div class="card"><div class="label">Best</div><div class="value"><span id="best">–</span><small>tok/s</small></div></div>
     <div class="card"><div class="label">Requests</div><div class="value" id="count">0</div></div>
     <div class="card"><div class="label">Output tokens</div><div class="value" id="tokens">0</div></div>
@@ -156,38 +158,44 @@ let live = null;               // {id, start, first, chunks}
 let freshId = null;
 let ticker = null;
 
+// Per-reply rate: the server timing the official speed patch uses (stps), else our own measurement.
+const rate = (r) => r.stps ?? r.tps;
 function visible() { return recs.filter((r) => (r.ts || 0) >= cutoff); }
 
 function render() {
   const v = visible();
-  const best = v.reduce((m, r) => (r.tps > (m?.tps ?? -1) ? r : m), null);
-  $("best").textContent = best ? fmt(best.tps) : "–";
+  const best = v.reduce((m, r) => (rate(r) > (m ? rate(m) : -1) ? r : m), null);
+  $("best").textContent = best ? fmt(rate(best)) : "–";
+  // Same headline as the patch: mean of per-call rates, p90 by nearest rank.
+  const rates = v.map(rate), sorted = rates.slice().sort((a, b) => a - b);
+  $("mean").textContent = v.length ? fmt(rates.reduce((s, x) => s + x, 0) / v.length) : "–";
+  $("mean-meta").textContent = v.length ? `p90 ${fmt(sorted[Math.max(0, Math.ceil(0.9 * sorted.length) - 1)])} · ${v.length} calls` : "";
   $("count").textContent = v.length;
   $("tokens").textContent = fmt(v.reduce((s, r) => s + r.out, 0));
-  $("avg").textContent = v.length ? `avg ${fmt(v.reduce((s, r) => s + r.tps, 0) / v.length)} tok/s` : "";
+  $("avg").textContent = v.length ? `server tok/s · avg ${fmt(v.reduce((s, r) => s + rate(r), 0) / v.length)}` : "";
 
   const bars = $("bars");
   if (!v.length) { bars.innerHTML = '<span class="empty">Waiting for the first reply…</span>'; }
   else {
-    const shown = v.slice(-80), max = Math.max(...shown.map((r) => r.tps));
+    const shown = v.slice(-80), max = Math.max(...shown.map(rate));
     bars.innerHTML = shown.map((r) => {
       const cls = r === best ? "bar best" : r.id === freshId ? "bar new" : "bar";
-      return `<div class="${cls}" style="height:${Math.max(3, (r.tps / max) * 100)}%" title="#${r.id} · ${fmt(r.tps)} tok/s · ${r.out} tokens"></div>`;
+      return `<div class="${cls}" style="height:${Math.max(3, (rate(r) / max) * 100)}%" title="#${r.id} · ${fmt(rate(r))} tok/s · ${r.out} tokens"></div>`;
     }).join("");
   }
 
   $("rows").innerHTML = v.slice().reverse().map((r) => `
     <tr class="${r === best ? "best" : ""} ${r.id === freshId ? "fresh" : ""}">
       <td>${r.id ?? ""}</td><td>${r.t}</td><td>${fmt(r.out)}</td>
-      <td>${r.decode_s.toFixed(2)}s</td><td>${r.queue_s.toFixed(0)}s</td><td class="tps">${fmt(r.tps)}</td>
+      <td>${(r.server_s ?? r.decode_s).toFixed(2)}s</td><td>${r.queue_s.toFixed(0)}s</td><td class="tps">${fmt(rate(r))}</td>
     </tr>`).join("");
 
   if (!live) {
     const last = v[v.length - 1];
     $("hero").classList.remove("live");
     $("hero-label").textContent = "Last reply";
-    $("live-tps").textContent = last ? fmt(last.tps) : "–";
-    $("hero-meta").textContent = last ? `${fmt(last.out)} tokens in ${last.decode_s.toFixed(2)}s` : "";
+    $("live-tps").textContent = last ? fmt(rate(last)) : "–";
+    $("hero-meta").textContent = last ? `${fmt(last.out)} tokens in ${(last.server_s ?? last.decode_s).toFixed(2)}s${last.stps ? " (server)" : ""}` : "";
   }
 }
 

@@ -1,6 +1,8 @@
 """Pass-through proxy to api.cerebras.ai that measures per-reply TPS and serves a live dashboard.
 
-TPS = (output tokens - 1) / (last token time - first token time), same formula as the bounty.
+tps:  (output tokens - 1) / (last token time - first token time), measured here.
+stps: output tokens / time_info.completion_time, the server timing the official speed patch reads;
+      its headline is the mean of stps over every model call.
 
 Routes:
   /v1/...     forwarded to api.cerebras.ai (OpenClaw's baseUrl points here)
@@ -183,6 +185,11 @@ class H(http.server.BaseHTTPRequestHandler):
                    "prompt": usage.get("prompt_tokens"),
                    "tps": round((n - 1) / (last - first), 1), "decode_s": round(last - first, 2),
                    "ttft_s": round(first - t0, 1), "queue_s": round((tinfo or {}).get("queue_time", 0), 1), "sent": sent}
+            # Server-side rate, as the official speed patch computes it: completion_tokens / time_info.completion_time.
+            ct = (tinfo or {}).get("completion_time")
+            if ct:
+                rec["server_s"] = round(ct, 4)
+                rec["stps"] = round(n / ct, 1)
             print(json.dumps(rec), flush=True)
             with open(LOG, "a") as f:
                 f.write(json.dumps(rec) + "\n")
