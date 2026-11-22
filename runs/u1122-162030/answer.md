@@ -1,0 +1,291 @@
+## Gift 1
+Name: LEGO, Holiday Main Street Building Set 10308, Christmas Village Set
+Retailer: Walmart
+Price: $199.99
+URL: https://www.walmart.com/ip/LEGO-Holiday-Main-Street-Building-Set-10308-Adults-Family-Christmas-Village-Building-Kit-Holiday-Display-Set-Shops-Streetcar-6-Minifigures-Christmas/1461228873
+Product page excerpt
+> ## LEGO Holiday Main Street Building Set 10308, for Adults and Family, Christmas Village Building Kit, Holiday Display Set with Shops, Streetcar and 6 Minifigures, Christmas Decoration to Build Together
+> 
+> - A festive tradition – Enjoy quality time crafting all the details of this Holiday Main Street (10308) buildable model with a toy store, music store, shoppers, store owners and their cozy apartments
+> - Hop on the streetcar – Assemble all the details of the streetcar, ready to transport the minifigures. It’s decorated for Christmas and includes 4 seats for passengers
+> - Let’s go shopping – Head to the Santa’s Toys and Games toy store and H. Jollie’s music store to find toys and musical instruments, all waiting to make someone’s Christmas dreams come true
+> - Time to relax – When the working day is over, the store owners can relax in their apartments. Discover cozy details with a tree, presents and bed in the toy store, and a dining area in the music store
+> - 6 minifigures – Bring the LEGO Christmas village display to life with the set’s ensemble of minifigures. There are 2 shoppers, a child mailing a letter to Santa, 2 store owners and a streetcar driver
+> 
+> ## Reviews summary
+> 
+> ## At a glance
+> BrandLEGO
+> ThemeLEGO Icons
+> Product lineLEGO Icons
+> Piece count1514
+> Total count1514
+> 
+> Current price is $199.99
+> 
+>  Price when purchased online
+> 
+> - Free shipping
+> - Free 90-day returns
+> 
+> ## How do you want your item?
+> I want delivery savings with
+> Try 30 days for just $1! Choose a plan at checkout.
+> 
+> How do you want your item?
+> Ships to
+> Arrives by Tue, Nov 24
+> 
+>  Fulfilled by Walmart
+> 
+> 4.803149606299213 out of 5 stars
+> 
+> 4.8 stars out of 5, based on 127 seller reviews(4.8)
+> 
+> Free 90-day returns
+> 
+> [Christmas Snow House Building Set, 1,152 PCS Winter Village Brick House with LED Lights, Snowy Holiday Cottage Model Kit, Collectible Xmas Decor Gift for Adults & Kids 12+ $69.99](https://www.walmart.com/sp/track?bt=1&eventST=click&plmt=sp-item-top~desktop~&pos=1&tax=4171_4186_1105635_2927326&rdf=1&rd=https%3A%2F%2Fwww.walmart.com%2Fip%2FChristmas-Snow-House-Building-Set-1-152-PCS-Winter-Village-Brick-House-LED-Lights-Snowy-Holiday-Cottage-Model-Kit-Collectible-Xmas-Decor-Gift-Adults%2F21139766104%3FadsRedirect%3Dtrue&adUid=1d69e9b2-35a0-4c68-9a20-4a421d6097bc&mloc=sp-item-top&pltfm=desktop&pgId=1461228873&pt=item&spQs=QO4MJB27u-7DLSxiFXlExX2cFUPbvCJ3s8BDIR1rAVgbjpUkW5r8BEsRdZyGuWBPhAFKLnPWYvdYdHG29FDtGhR4F1T3Y0je_BFfj1N__To-urbSpS6SlJkVslW5i5zJYnWH8BXJt747q70MTeI4aM7VBvQO73fbzbPpKkxxeamPMNz66SoT4ss9Fwh4HFfSKpkazW_UrQjqOjOVysr3IsRsi8svXD8K6SGVj1zYnBk&storeId=3081&specificity=&specificityScore=&couponState=na&bkt=ace1_default%7Cace2_default%7Cace3_default&/ip/Christmas-Snow-House-Building-Set-1-152-PCS-Winter-Village-Brick-House-LED-Lights-Snowy-Holiday-Cottage-Model-Kit-Collectible-Xmas-Decor-Gift-Adults/21139766104)
+> 
+> current price $69.99
+> 
+> ### Christmas Snow House Building Set, 1,152 PCS Winter Village Brick House with LED Lights, Snowy Holiday Cottage Model Kit, Collectible Xmas Decor Gift for Adults & Kids 12+
+> 
+> Shipping, arrives Tue, Nov 24
+> 
+> Sponsored
+
+## Gift 2
+Name: Fujifilm, Instax Mini 12 Instant Film Camera, Compact, Clay White
+Retailer: Walmart
+Price: Now $69.90You save $24.05
+
+was $93.95
+URL: https://www.walmart.com/ip/FUJIFILM-INSTAX-MINI-12-Instant-Film-Camera-Clay-White/1020921431
+Product page excerpt
+> In 50+ people's cartsBest seller
+>  Actual ColorWhite
+> Blossom Pink, $79.99, was $93.95
+> 
+> Blue, $96.00
+> 
+> Mint Green, $79.99, was $93.95
+> 
+> Purple, $84.99
+> 
+> White, $69.90, was $93.95
+> 
+> - Instant Photos: Prints high-quality, 2 x 3 INSTAX MINI instant photos in approximately five seconds (development time is about 90 seconds).
+> - Compact Design: Features a cute and compact design with an easy twist lens to turn on and off.
+> - Color Options: Available in five appealing tones: Pastel Blue, Mint Green, Blossom Pink, Lilac Purple, and Clay White.
+> - Selfie Mode: Equipped with a Close-up mode and a perfectly positioned selfie mirror for flawless selfies.
+> - Automatic Flash: Includes automatic flash control for well-lit photos in various lighting conditions.
+> - Parallax Correction: Close-up mode aligns the viewfinder with the lens to ensure accurate framing (parallax correction).
+> - Easy Operation: Features automatic exposure for simple point-and-shoot functionality without adjusting settings.
+> - Digital Integration: Use the free INSTAX UP! App to scan, edit, tag, and save your printed INSTAX photos digitally on your Smartphone.
+> 
+> Generated by AI
+> 
+> ## Reviews summary
+> 
+> Current price is Now $69.90You save $24.05
+> 
+> was $93.95
+> 
+>  Price when purchased online
+> 
+> - Free shipping
+> - Free Holiday returns until Jan 31
+> 
+>  Walmart Accident Plan by Allstate
+> (Only one option can be selected at a time)
+> 2-Year Plan - $9.00
+> 3-Year Plan - $12.00
+> 
+> ## How do you want your item?
+> I want delivery savings with
+> Try 30 days for just $1! Choose a plan at checkout.
+> 
+> How do you want your item?
+> Ships to
+> Arrives by Today
+> .
+> Order within 11 hr 37 min
+> 
+>  Only 1 left
+>  Sold and shipped by Walmart.com
+> 
+> Extended holiday returns
+> Free Holiday returns until Jan 31
+> 
+>  This item is gift eligible
+
+## Gift 3
+Name: JBL, Clip 5 Portable Waterproof Bluetooth Speaker, Black
+Retailer: Walmart
+Price: Now $49.95You save $30.00
+
+was $79.95
+URL: https://www.walmart.com/ip/JBL-Clip-5-Ultra-portable-waterproof-speaker-Black/5433539246
+Product page excerpt
+> Overall pick
+>  Actual ColorBlack
+> Black, $49.95, was $79.95
+> 
+> Black and Orange, $49.95, was $79.95
+> 
+> Blue, $49.95, was $79.95
+> 
+> CAMO, $49.95, was $79.95
+> 
+> Pink, $49.95, was $79.95
+> 
+> Purple, $49.95, was $79.95
+> 
+> Red, $49.95, was $79.95
+> 
+> Sand, $49.95, was $79.95
+> 
+> White, $49.95, was $79.95
+> 
+> - Powerful Sound: This compact JBL Clip 5 speaker delivers powerful JBL Pro Sound, featuring punchy bass. It offers an RMS power rating of 5W and a peak audio power capacity of 7W.
+> - Integrated Carabiner: Designed for on-the-go listening, the speaker features a redesigned, fully integrated carabiner for easy clipping to almost anything. This ultra-portable model is black.
+> - Robust Durability: With an IP67 waterproof and dustproof rating, the JBL Clip 5 is built to withstand water immersion and resist dust ingress, making it suitable for various challenging environments.
+> - Extended Playtime: Enjoy up to 12 hours of continuous audio playback, with additional hours available via Playtime Boost. It supports Bluetooth 5.3 for reliable wireless connectivity.
+> - Expansive Audio: Enhance your listening by pairing two Clip 5 speakers for true stereo sound or connecting multiple JBL Auracast-enabled speakers for a more expansive audio experience.
+> 
+> Generated by AI
+> 
+> ## Reviews summary
+> 
+> Current price is Now $49.95You save $30.00
+> 
+> was $79.95
+> 
+>  Price when purchased online
+> 
+> 5 free offers, including Apple Music up to 2 months Free
+> 
+> - Free shipping
+> - Free Holiday returns until Jan 31
+> 
+>  New$49.95
+> $49.95
+> 
+> Restored: Like New
+> 
+>  Walmart Accident Plan by Allstate
+> (Only one option can be selected at a time)
+> 2-Year Plan - $7.00
+> 3-Year Plan - $9.00
+> 
+> ## How do you want your item?
+> I want delivery savings with
+> Try 30 days for just $1! Choose a plan at checkout.
+> 
+> How do you want your item?
+> Ships to
+> Arrives by Today
+> .
+> Order within 11 hr 37 min
+> 
+>  Sold and shipped by Walmart.com
+> 
+> Extended holiday returns
+> Free Holiday returns until Jan 31
+> 
+>  This item is gift eligible
+
+## Gift 4
+Name: Cozy Bliss Reversible Faux Rabbit Fur Throw Blanket, Plush Bubble Texture for Couch and Bed, Beige, 50 x 60 in
+Retailer: Walmart
+Price: $29.06
+URL: https://www.walmart.com/ip/Cozy-Bliss-Reversible-Faux-Rabbit-Fur-Throw-Blanket-Plush-Bubble-Texture-for-Couch-and-Bed-Beige-50-x-60-in/20744850032
+Product page excerpt
+> Actual ColorBeige
+> Beige, $29.06
+> 
+> Misty Blue, $29.06
+> 
+> Tie-Dye Beige, $29.99
+> 
+> - 🧶Reversible Plush Comfort: Combines a dense 450 GSM faux rabbit fur front with a smooth 230 GSM milk velvet reverse, providing two soft textures and cozy warmth in one versatile throw blanket.
+> - 🧶Thick Bubble Texture: The raised bubble pattern creates a fluffy, dimensional look, while the neutral beige color adds a warm decorative touch to couches, sofas, chairs, and beds.
+> - 🧶Comfortable Throw Size: Measuring 50 x 60 inches, this blanket provides cozy coverage for reading, napping, watching TV, gaming, or relaxing without the bulk of a full-size blanket.
+> - 🧶Versatile Home Essential: Use it as a warm couch blanket, a decorative sofa throw, an extra layer for the bedroom, or a thoughtful gift for birthdays, holidays, and housewarmings.
+> - 🧶Made for Lasting Softness: Cozy Bliss Triple-Anti Fleece technology helps resist shedding, fading, and static, while reinforced edges support durability during regular use.
+> - 🧶Easy Care and Fluffing: Machine wash cold on a gentle cycle and tumble dry low. After unpacking, gently shake and tumble dry on low to help restore its soft, fluffy appearance.
+> 
+> Current price is $29.06
+> 
+>  Price when purchased online
+> 
+> - Free shipping
+> - Free Holiday returns until Jan 31
+> 
+> ## How do you want your item?
+> How do you want your item?
+> Ships to
+> Arrives by in 3+ days
+> |
+> 
+>  4.8 out of 5 stars
+> 
+> 4.8 stars out of 5, based on 20 seller reviews(4.8)
+> 
+> Extended holiday returns
+> Free Holiday returns until Jan 31
+> 
+> Sponsored
+
+## Gift 5
+Name: Trouble, Board Game, for 2 to 4 Players, Ages 5 and Up
+Retailer: Walmart
+Price: $9.84
+URL: https://www.walmart.com/ip/Pop-O-Matic-Trouble-Board-Game-for-Kids-and-Family-Ages-5-and-Up-2-4-Players/334768093
+Product page excerpt
+> 500+ bought since yesterdayOverall pick
+> 
+> ## Trouble Board Game for Kids, Pop-O-Matic Family Game for 2-4 Players, Holiday Gift for Kids Ages 5+
+> 
+> - Family Entertainment: Designed for 2-4 players, ages 5 and up, this game encourages friendly competition, uniting kids and adults for family gatherings and playdates.
+> - Simple Objective: Easy to learn and quick to set up, players aim to be the first to move all their game pieces around the board to win.
+> - Unique Dice Roller: Features the Pop-o-Matic plastic bubble, allowing players to press and pop to roll the die, keeping it secure and preventing loss.
+> - Varied Gameplay: Instructions offer classic Trouble gameplay or a version with Power Up Spaces, providing options for a more challenging experience.
+> - Engaging Race: Players race their four game pieces around the board, utilizing a "bump" mechanic to send opponents back to their starting space.
+> - Versatile Use: Suitable for family game nights, it also functions as valuable classroom supplies, preschool games, or prize box toys for children.
+> 
+> Generated by AI
+> 
+> ## Reviews summary
+> 
+> Current price is $9.84
+> 
+>  Price when purchased online
+> 
+> - Free 90-day returns
+> 
+> ## How do you want your item?
+> I want delivery savings with
+> Try 30 days for just $1! Choose a plan at checkout.
+> 
+> How do you want your item?
+> Ships to
+> Arrives by Today
+> .
+> Order within 11 hr 37 min
+> 
+>  Sold and shipped by Walmart.com
+> 
+> Free 90-day returns
+> 
+>  This item is gift eligible
+> 
+> Sponsored
+
+| Name | Retailer | Price | URL |
+|---|---|---|---|
+| LEGO, Holiday Main Street Building Set 10308, Christmas Village Set | Walmart | $199.99 | https://www.walmart.com/ip/LEGO-Holiday-Main-Street-Building-Set-10308-Adults-Family-Christmas-Village-Building-Kit-Holiday-Display-Set-Shops-Streetcar-6-Minifigures-Christmas/1461228873 |
+| Fujifilm, Instax Mini 12 Instant Film Camera, Compact, Clay White | Walmart | Now $69.90You save $24.05<br><br>was $93.95 | https://www.walmart.com/ip/FUJIFILM-INSTAX-MINI-12-Instant-Film-Camera-Clay-White/1020921431 |
+| JBL, Clip 5 Portable Waterproof Bluetooth Speaker, Black | Walmart | Now $49.95You save $30.00<br><br>was $79.95 | https://www.walmart.com/ip/JBL-Clip-5-Ultra-portable-waterproof-speaker-Black/5433539246 |
+| Cozy Bliss Reversible Faux Rabbit Fur Throw Blanket, Plush Bubble Texture for Couch and Bed, Beige, 50 x 60 in | Walmart | $29.06 | https://www.walmart.com/ip/Cozy-Bliss-Reversible-Faux-Rabbit-Fur-Throw-Blanket-Plush-Bubble-Texture-for-Couch-and-Bed-Beige-50-x-60-in/20744850032 |
+| Trouble, Board Game, for 2 to 4 Players, Ages 5 and Up | Walmart | $9.84 | https://www.walmart.com/ip/Pop-O-Matic-Trouble-Board-Game-for-Kids-and-Family-Ages-5-and-Up-2-4-Players/334768093 |

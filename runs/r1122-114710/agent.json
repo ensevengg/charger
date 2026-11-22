@@ -1,0 +1,11 @@
+{
+  "ok": false,
+  "runId": "6150b7fe-3768-45ba-9858-bf411c08841e",
+  "origin": "gateway",
+  "error": {
+    "type": "cli_error",
+    "message": "Rate-limit recovery stopped after 11 automatic retries without a completed model response. Check completed work before trying again. | OPENCLAW_SESSION_WATCHDOG"
+  }
+}
+[openclaw] The CLI command failed.
+[openclaw] For help, run `openclaw doctor`.

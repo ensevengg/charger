@@ -1,0 +1,8 @@
+3 gift sections found  ✗ expected 5
+Gift 1: url ✓  source ✓  price ✓  excerpt ✓  (32 quoted lines, 0 not verbatim)  https://www.walmart.com/ip/LEGO-Holiday-Main-Street-Building-Set-10308-Adults-Family-Christmas-Village-Building-Kit-Holiday-Display-Set-Shops-Streetcar-6-Minifigures-Christmas/1461228873
+Gift 2: url ✓  source ✓  price ✗  excerpt ✗  (31 quoted lines, 31 not verbatim)  https://www.walmart.com/ip/Canon-PowerShot-SX740-HS-Digital-Camera-20-3-Megapixel-CMOS-Sensor-40x-Optical-Zoom-4K-Video-Compact-Black/605041208
+    not in page: "In 100+ people's cartsBest seller"
+    not in page: '## Canon PowerShot SX740 HS Digital Camera, 20.3 Megapixel CMOS Sensor, 40x Optical Zoom, 4K Video, '
+    not in page: '- Powerful Zoom: Features a 40x optical zoom with optical image stabilization and zoom framing assis'
+Gift 3: url ✓  source ✓  price ✓  excerpt ✓  (25 quoted lines, 0 not verbatim)  https://www.walmart.com/ip/Pop-O-Matic-Trouble-Board-Game-for-Kids-and-Family-Ages-5-and-Up-2-4-Players/334768093
+FAIL

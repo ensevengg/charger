@@ -1,0 +1,3 @@
+1 gift sections found  ✗ expected 5
+Gift 1: url ✓  source ✓  price ✓  excerpt ✓  (23 quoted lines, 0 not verbatim)  https://www.walmart.com/ip/Pop-O-Matic-Trouble-Board-Game-for-Kids-and-Family-Ages-5-and-Up-2-4-Players/334768093
+FAIL

@@ -1,0 +1,6 @@
+4 gift sections found  ✗ expected 5
+Gift 1: url ✓  source ✓  price ✓  excerpt ✓  (33 quoted lines, 0 not verbatim)  https://www.walmart.com/ip/LEGO-Holiday-Main-Street-Building-Set-10308-Adults-Family-Christmas-Village-Building-Kit-Holiday-Display-Set-Shops-Streetcar-6-Minifigures-Christmas/1461228873
+Gift 2: url ✓  source ✓  price ✓  excerpt ✓  (35 quoted lines, 0 not verbatim)  https://www.walmart.com/ip/NBD-Digital-Camera-4K-Ultra-HD-48MP-All-in-One-Vlogging-Camera-with-Wide-Angle-Lens-Digital-Zoom-16x-and-3-Screen/711035416
+Gift 3: url ✓  source ✓  price ✓  excerpt ✓  (44 quoted lines, 0 not verbatim)  https://www.walmart.com/ip/Apple-AirPods-5-Wireless-Earbuds-with-Active-Noise-Cancellation-and-Wireless-Charging-Case/20991207083
+Gift 4: url ✓  source ✓  price ✓  excerpt ✓  (29 quoted lines, 0 not verbatim)  https://www.walmart.com/ip/Monopoly-Board-Game-Family-Board-Game-for-2-to-6-Players/670964901
+FAIL

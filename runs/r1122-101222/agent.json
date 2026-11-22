@@ -1,0 +1,11 @@
+{
+  "ok": false,
+  "runId": "796d5fbd-f9ac-44cf-813c-65190fa4969c",
+  "origin": "gateway",
+  "error": {
+    "type": "cli_error",
+    "message": "Couldn't connect to the AI service. Check your connection, then try again. For details, open Settings → Logs in the Control UI or run `openclaw logs --follow`. | ***"
+  }
+}
+[openclaw] The CLI command failed.
+[openclaw] For help, run `openclaw doctor`.

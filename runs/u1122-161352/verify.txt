@@ -1,0 +1,8 @@
+patch readout: 808 tok/s mean over 3 calls (603, 870, 951)
+5 gift sections found
+Gift 1: url ✓  source ✓  price ✓  excerpt ✓  (32 quoted lines, 0 not verbatim)  https://www.walmart.com/ip/LEGO-Iconic-Christmas-Tree-40573/1970544820
+Gift 2: url ✓  source ✓  price ✓  excerpt ✓  (33 quoted lines, 0 not verbatim)  https://www.walmart.com/ip/Fujifilm-instax-Mini-99-Instant-Camera/5625569696
+Gift 3: url ✓  source ✓  price ✓  excerpt ✓  (43 quoted lines, 0 not verbatim)  https://www.walmart.com/ip/JBL-Clip-5-Ultra-portable-waterproof-speaker-Black/5433539246
+Gift 4: url ✓  source ✓  price ✓  excerpt ✓  (24 quoted lines, 0 not verbatim)  https://www.walmart.com/ip/Cozy-Bliss-Reversible-Faux-Rabbit-Fur-Throw-Blanket-Plush-Bubble-Texture-for-Couch-and-Bed-Beige-50-x-60-in/20744850032
+Gift 5: url ✓  source ✓  price ✓  excerpt ✓  (25 quoted lines, 0 not verbatim)  https://www.walmart.com/ip/Pop-O-Matic-Trouble-Board-Game-for-Kids-and-Family-Ages-5-and-Up-2-4-Players/334768093
+PASS
