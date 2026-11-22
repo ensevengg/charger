@@ -1,11 +1,12 @@
-# Santa's Speedy Shopper: 1,487 TPS
+# Santa's Speedy Shopper: 1,730 TPS
 
 Speed Bounty entry for the Cerebras x Kimi hackathon.
 
-**1,487 tok/s mean · 1,522 p90**, measured by the official OpenClaw speed patch.
+**1,730 tok/s mean · 1,947 p90**, measured by the official OpenClaw speed patch.
 
 - Model: Kimi K3.1 Pro on Cerebras
-- Two model calls: 1,522 and 1,451 tok/s
+- Two model calls: 1,947 and 1,514 tok/s
+- Best of 1,035 recorded runs (run `u1123-022456`)
 - Every gift comes from a live Walmart search, checked after the run
 - Video, screenshot and logs: [`submission/`](submission/)
 

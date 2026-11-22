@@ -1,4 +1,4 @@
-patch readout: 1,487 tok/s mean over 2 calls (1,522, 1,451)
+patch readout: 1,730 tok/s mean over 2 calls (1,947, 1,514)
 5 gift sections found
 Gift 1: block ✓  url ✓  unique ✓  https://www.walmart.com/ip/LEGO-Iconic-Christmas-Tree-40573/1970544820
 Gift 2: block ✓  url ✓  unique ✓  https://www.walmart.com/ip/Fujifilm-instax-Mini-99-Instant-Camera/5625569696

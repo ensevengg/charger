@@ -246,7 +246,8 @@
         ],
         "supportsParallelToolCalls": true
       }
-    }
+    },
+    "sessionIdleTtlMs": 60000
   },
   "cron": {
     "enabled": false,
