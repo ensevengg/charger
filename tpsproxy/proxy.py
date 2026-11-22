@@ -266,6 +266,16 @@ class H(http.server.BaseHTTPRequestHandler):
         path = self.path.split("?")[0]
         if path in ("/", "/index.html"):
             return self._static()
+        if path == "/best.json":  # written by leaderboard.py after each run
+            try:
+                body = open(os.path.join(os.path.dirname(LOG), "best.json"), "rb").read()
+            except OSError:
+                body = b"{}"
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            return self.wfile.write(body)
         if path == "/events":
             return self._events()
         self._fwd("GET")

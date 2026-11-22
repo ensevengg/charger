@@ -111,9 +111,10 @@
       <div class="meta" id="hero-meta"></div>
     </div>
     <div class="card"><div class="label">Mean · server</div><div class="value"><span id="mean">–</span><small>tok/s</small></div><div class="meta" id="mean-meta"></div></div>
-    <div class="card"><div class="label">Best</div><div class="value"><span id="best">–</span><small>tok/s</small></div></div>
+    <div class="card"><div class="label">Best run · patch mean</div><div class="value"><span id="bestrun">–</span><small>tok/s</small></div><div class="meta" id="bestrun-meta"></div></div>
+    <div class="card"><div class="label">Fastest call</div><div class="value"><span id="best">–</span><small>tok/s</small></div></div>
     <div class="card"><div class="label">Requests</div><div class="value" id="count">0</div></div>
-    <div class="card"><div class="label">Output tokens</div><div class="value" id="tokens">0</div></div>
+    <div class="card" style="display:none"><div class="value" id="tokens">0</div></div>
   </section>
 
   <section class="card chart">
@@ -292,6 +293,18 @@ $("clear").onclick = () => {
   try { localStorage.setItem("tps-cutoff", String(cutoff)); } catch {}
   $("stream").innerHTML = ""; freshId = null; render();
 };
+
+// Best passing run so far (logs/best.json, updated by leaderboard.py after every run).
+async function loadBest() {
+  try {
+    const b = await (await fetch("/best.json", { cache: "no-store" })).json();
+    if (b.score) {
+      $("bestrun").textContent = fmt(b.score);
+      $("bestrun-meta").textContent = `${b.run} · calls ${b.calls}`;
+    }
+  } catch {}
+}
+loadBest(); setInterval(loadBest, 10000);
 
 connect();
 </script>

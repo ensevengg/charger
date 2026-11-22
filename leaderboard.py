@@ -34,4 +34,11 @@ out = ["| Mean TPS | Run | Check | Patch readout | Calls | Final reply TPS | Tim
        "|---:|---|---|---:|---:|---:|---|---|"]
 out += [f"| {t:,.0f} | {r} | {v} | {p} | {n} | {f:,.0f} | {s} | {vid} |" for t, r, v, p, n, f, s, vid in rows]
 open(f"{here}/runs/leaderboard.md", "w").write("\n".join(out) + "\n")
+# Best passing run by the patch's own readout, for the dashboard's "Best run" card.
+passed = [(float(p.replace(",", "")), r, f) for t, r, v, p, n, f, s, vid in rows if v == "PASS" and p != "-"]
+if passed:
+    score, rid, _ = max(passed)
+    calls = re.search(r"over \d+ calls \(([^)]*)\)", open(f"{here}/runs/{rid}/verify.txt").read())
+    json.dump({"score": score, "run": rid, "calls": calls.group(1) if calls else "", "runs": len(rows)},
+              open(f"{here}/logs/best.json", "w"))
 print("\n".join(out[:12]))
