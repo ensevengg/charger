@@ -36,8 +36,12 @@ answer (copied text decodes much faster than new prose).
 
 ## Runs
 
-`./run.sh <session-id>` runs the Speedy Shopper prompt once and saves the reply to
-`logs/runs/<session-id>.md`.
+`./run.sh <id>` (CLI) or `./run-ui.sh <id>` (patched web UI) does one recorded run;
+`./loop.sh [n]` does many. Each run gets its own folder `runs/<id>/`: `answer.md`,
+`verify.txt`, `window.txt`, the `AGENTS.md` it ran with, and for UI runs `final.png` and
+`readout.json`. Videos (`full.mp4`, `demo.mp4`) sit there too but are gitignored.
+`./leaderboard.py` ranks every run into `runs/leaderboard.md`. Per-reply TPS for all runs
+stays in `logs/tps.jsonl`.
 
 ## Live dashboard
 

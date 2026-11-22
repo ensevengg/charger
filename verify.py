@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check a Speedy Shopper run's final answer against what its tools actually returned.
 
-Usage: ./verify.py <session-id> [final-answer.md]     (default: logs/runs/<id>.md)
+Usage: ./verify.py <session-id> [final-answer.md]     (default: runs/<id>/answer.md)
 
 For every "## Gift N" section it checks:
   url      the URL was fetched successfully with web_fetch during the run (HTTP 200, no bot wall)
@@ -137,7 +137,7 @@ def main():
     here = os.path.dirname(os.path.abspath(__file__))
     msgs = db_messages(sid)
     events = to_events(msgs) if msgs else export(sid)
-    path = sys.argv[2] if len(sys.argv) > 2 else f"{here}/logs/runs/{sid}.md"
+    path = sys.argv[2] if len(sys.argv) > 2 else f"{here}/runs/{sid}/answer.md"
     msgs = [e["data"]["message"] for e in events
             if e.get("source") == "transcript" and e["type"] == "assistant.message"]
     if os.path.exists(path):

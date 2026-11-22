@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Usage: ./loop.sh [count]   — recorded runs (RUN=./run-ui.sh for the patched web UI) with a pause between (PAUSE=45 s); updates logs/leaderboard.md after each.
+# Usage: ./loop.sh [count]   — recorded runs (RUN=./run-ui.sh for the patched web UI) with a pause between (PAUSE=45 s); updates runs/leaderboard.md after each.
 set -uo pipefail; cd "$(dirname "$0")"
 for i in $(seq 1 "${1:-10}"); do
   id="${PREFIX:-r}$(date +%m%d-%H%M%S)"

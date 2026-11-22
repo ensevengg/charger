@@ -5,3 +5,6 @@ searxng/settings.yml
 __pycache__/
 build/
 state-patched/
+# runs/<id>/ is tracked; recordings are too big for git
+runs/**/*.mp4
+runs/**/*.webm
