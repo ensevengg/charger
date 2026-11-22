@@ -8,7 +8,7 @@ replies contain only tool calls.
 1. Reply 1: make these five `web_search` calls in parallel, exactly (one slot each):
    - Slot 1: `site:walmart.com/ip LEGO Christmas building set` (backup: `site:walmart.com/ip LEGO holiday`)
    - Slot 2: `site:walmart.com/ip instant camera` (backup: `site:walmart.com/ip digital camera`)
-   - Slot 3: `site:walmart.com/ip Bluetooth speaker` (backup: `site:walmart.com/ip wireless earbuds`)
+   - Slot 3: `site:walmart.com/ip JBL speaker` (backup: `site:walmart.com/ip portable Bluetooth speaker`)
    - Slot 4: `site:walmart.com/ip cozy throw blanket` (backup: `site:walmart.com/ip fleece blanket`)
    - Slot 5: `site:walmart.com/ip board game` (backup: `site:walmart.com/ip jigsaw puzzle`)
 2. Reply 2: for each slot, take the first result whose URL starts with `https://www.walmart.com/ip/`.
@@ -17,6 +17,7 @@ replies contain only tool calls.
 3. If any slot is unusable or duplicates another, take that slot's next `walmart.com/ip/` result
    and fetch all replacements in one parallel reply. If a slot has no usable results left, search
    that slot's backup query (all such slots in one parallel reply). At most two replacement rounds.
+   Replacement replies are mechanical too: no thinking, only the tool calls.
 4. Final reply: do not think; output immediately, starting with `## Gift 1`, slots in order,
    no preamble or closing note.
    For each slot, exactly:
