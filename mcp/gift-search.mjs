@@ -24,7 +24,8 @@ async function giftSearch({ slot, query }) {
       if (hits.length) {
         const h = hits[0];
         const clean = (s) => String(s || "").replace(/\s+/g, " ").trim();
-        return `${NUDGE}## Gift ${slot}\nName: ${clean(h.title)}\nRetailer: Walmart\nURL: ${h.url}\nSnippet: ${clean(h.content)}`;
+        const snippet = process.env.GIFT_SNIPPET === "0" ? "" : `\nSnippet: ${clean(h.content)}`;
+        return `${NUDGE}## Gift ${slot}\nName: ${clean(h.title)}\nRetailer: Walmart\nURL: ${h.url}${snippet}`;
       }
     }
   }
