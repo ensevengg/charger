@@ -1,0 +1,257 @@
+{
+  "agents": {
+    "defaults": {
+      "workspace": "/home/node/.openclaw/workspace",
+      "model": {
+        "primary": "cerebras/moonshotai-kimi-k3.1-pro-trial"
+      },
+      "models": {
+        "cerebras/moonshotai-kimi-k3.1-pro-trial": {
+          "alias": "Kimi K3.1 Pro",
+          "params": {
+            "temperature": 0.6
+          }
+        }
+      },
+      "thinkingDefault": "low",
+      "timeoutSeconds": 1800,
+      "modelPolicy": {
+        "allow": [
+          "cerebras/moonshotai-kimi-k3.1-pro-trial"
+        ]
+      },
+      "utilityModel": "",
+      "compaction": {
+        "memoryFlush": {
+          "enabled": false
+        },
+        "enabled": false
+      },
+      "heartbeat": {
+        "every": "0m"
+      }
+    },
+    "entries": {
+      "main": {}
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": {
+        "source": "env",
+        "provider": "default",
+        "id": "OPENCLAW_GATEWAY_TOKEN"
+      }
+    },
+    "port": 18789,
+    "bind": "lan",
+    "tailscale": {
+      "mode": "off"
+    },
+    "controlUi": {
+      "allowedOrigins": [
+        "http://localhost:18789",
+        "http://127.0.0.1:18789"
+      ],
+      "sessionObserver": false
+    }
+  },
+  "tools": {
+    "profile": "full",
+    "web": {
+      "search": {
+        "provider": "searxng"
+      }
+    },
+    "allow": [
+      "gifts__find_gifts"
+    ],
+    "toolSearch": false
+  },
+  "plugins": {
+    "entries": {
+      "cerebras": {
+        "enabled": true
+      },
+      "searxng": {
+        "enabled": true,
+        "config": {
+          "webSearch": {
+            "baseUrl": "http://searxng:8080"
+          }
+        }
+      }
+    },
+    "slots": {
+      "memory": "none"
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "cerebras": {
+        "baseUrl": "http://tpsproxy:8080/v1",
+        "api": "openai-completions",
+        "apiKey": "${CEREBRAS_API_KEY}",
+        "models": [
+          {
+            "id": "moonshotai-kimi-k3.1-pro-trial",
+            "name": "Kimi K3.1 Pro (Cerebras)",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "contextWindow": 262144,
+            "maxTokens": 2048,
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "compat": {
+              "supportsTools": true,
+              "supportsStrictMode": false,
+              "supportsReasoningEffort": true,
+              "supportedReasoningEfforts": [
+                "low",
+                "high",
+                "max"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "meta": {
+    "migrations": {
+      "modelPolicyAllowlist": true,
+      "webhookListeners": true,
+      "utilityModelSeparation": true
+    },
+    "lastTouchedVersion": "2026.10.9"
+  },
+  "wizard": {
+    "lastRunAt": "2026-11-22T08:41:43.642Z",
+    "lastRunVersion": "2026.10.9",
+    "lastRunCommand": "doctor",
+    "lastRunMode": "local"
+  },
+  "skills": {
+    "entries": {
+      "1password": {
+        "enabled": false
+      },
+      "blogwatcher": {
+        "enabled": false
+      },
+      "blucli": {
+        "enabled": false
+      },
+      "camsnap": {
+        "enabled": false
+      },
+      "coding-agent": {
+        "enabled": false
+      },
+      "eightctl": {
+        "enabled": false
+      },
+      "gemini": {
+        "enabled": false
+      },
+      "gh-issues": {
+        "enabled": false
+      },
+      "gifgrep": {
+        "enabled": false
+      },
+      "github": {
+        "enabled": false
+      },
+      "gog": {
+        "enabled": false
+      },
+      "goplaces": {
+        "enabled": false
+      },
+      "himalaya": {
+        "enabled": false
+      },
+      "mcporter": {
+        "enabled": false
+      },
+      "model-usage": {
+        "enabled": false
+      },
+      "nano-pdf": {
+        "enabled": false
+      },
+      "obsidian": {
+        "enabled": false
+      },
+      "openai-whisper": {
+        "enabled": false
+      },
+      "openai-whisper-api": {
+        "enabled": false
+      },
+      "openhue": {
+        "enabled": false
+      },
+      "oracle": {
+        "enabled": false
+      },
+      "ordercli": {
+        "enabled": false
+      },
+      "sag": {
+        "enabled": false
+      },
+      "sherpa-onnx-tts": {
+        "enabled": false
+      },
+      "songsee": {
+        "enabled": false
+      },
+      "sonoscli": {
+        "enabled": false
+      },
+      "spotify-player": {
+        "enabled": false
+      },
+      "summarize": {
+        "enabled": false
+      },
+      "tmux": {
+        "enabled": false
+      },
+      "trello": {
+        "enabled": false
+      },
+      "xurl": {
+        "enabled": false
+      }
+    }
+  },
+  "mcp": {
+    "servers": {
+      "gifts": {
+        "command": "node",
+        "args": [
+          "/home/node/.openclaw/mcp/gift-search.mjs"
+        ],
+        "supportsParallelToolCalls": true
+      }
+    }
+  },
+  "cron": {
+    "enabled": false,
+    "triggers": {
+      "enabled": false
+    }
+  }
+}
