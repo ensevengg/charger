@@ -7,9 +7,9 @@ replies contain only tool calls.
 
 1. Reply 1: make these five `web_search` calls in parallel, exactly (one slot each):
    - Slot 1: `site:walmart.com/ip LEGO Christmas building set` (backup: `site:walmart.com/ip LEGO holiday`)
-   - Slot 2: `site:walmart.com/ip instant camera` (backup: `site:walmart.com/ip digital camera`)
-   - Slot 3: `site:walmart.com/ip JBL speaker` (backup: `site:walmart.com/ip portable Bluetooth speaker`)
-   - Slot 4: `site:walmart.com/ip cozy throw blanket` (backup: `site:walmart.com/ip fleece blanket`)
+   - Slot 2: `site:walmart.com/ip instant camera` (backup: `site:walmart.com/ip Kodak instant camera`)
+   - Slot 3: `site:walmart.com/ip JBL speaker` (backup: `site:walmart.com/ip Sony speaker`)
+   - Slot 4: `site:walmart.com/ip cozy throw blanket` (backup: `site:walmart.com/ip Better Homes and Gardens throw`)
    - Slot 5: `site:walmart.com/ip board game` (backup: `site:walmart.com/ip jigsaw puzzle`)
 2. Reply 2: for each slot, take the first result whose URL starts with `https://www.walmart.com/ip/`.
    Call `web_fetch` on all five in parallel (maxChars 12000). A fetch is usable if it shows a
