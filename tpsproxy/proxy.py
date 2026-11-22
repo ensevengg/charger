@@ -151,12 +151,12 @@ class H(http.server.BaseHTTPRequestHandler):
                 r = c.getresponse()
                 # Cerebras answers 429 "queue_exceeded" when it is overloaded (not our rate limit).
                 # Wait it out here instead of letting the client give up on the run.
-                if r.status == 429 and busy < 60:
+                if r.status == 429 and busy < 200:
                     err = r.read()
                     if b"queue_exceeded" in err:
                         busy += 1
                         print(json.dumps({"upstream_busy": busy}), flush=True)
-                        time.sleep(4)
+                        time.sleep(1.5)
                         continue
                     r = _Buffered(r, err)
                 break

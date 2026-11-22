@@ -19,7 +19,7 @@ fs.writeFileSync(`${outDir}/start.txt`, String(Date.now() / 1000));
 await page.goto(url);
 const box = page.locator("textarea").first();
 await box.waitFor({ timeout: 60000 });
-await page.waitForTimeout(1500);
+await page.waitForTimeout(500);
 await box.fill(PROMPT);
 await box.press("Enter");
 fs.writeFileSync(`${outDir}/sent.txt`, String(Date.now() / 1000));
@@ -31,18 +31,21 @@ let idleSince = 0;
 await page.waitForTimeout(5000);
 while (Date.now() < deadline) {
   const working = await page.locator(".chat-working-indicator").count();
-  const table = (await page.getByText("| Name |").count()) + (await page.locator("table th", { hasText: "Retailer" }).count());
+  // Finished answer: a per-response speed badge next to the composer's session readout,
+  // or (older formats) a results table.
+  const done = (await page.locator(".chat-gen-speed").count()) >= 2 ||
+    (await page.getByText("| Name |").count()) + (await page.locator("table th", { hasText: "Retailer" }).count()) > 0;
   if (!working) {
     idleSince ||= Date.now();
-    if (Date.now() - idleSince > (table ? 2500 : 20000)) break;
+    if (Date.now() - idleSince > (done ? 1500 : 20000)) break;
   } else idleSince = 0;
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(250);
 }
 // Hold on the finished answer (products + links) with the speed readouts visible.
 await page.evaluate(() => {
   for (const el of document.querySelectorAll("*")) if (el.scrollHeight > el.clientHeight + 50) el.scrollTop = el.scrollHeight;
 });
-await page.waitForTimeout(5000);
+await page.waitForTimeout(3000);
 const speeds = await page.locator(".chat-gen-speed").allInnerTexts();
 fs.writeFileSync(`${outDir}/readout.json`, JSON.stringify({ end: Date.now() / 1000, speeds }, null, 1));
 console.log("readout", JSON.stringify(speeds));
