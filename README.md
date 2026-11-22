@@ -1,52 +1,54 @@
-# charger: OpenClaw sandbox for the Cerebras × Kimi Speed Bounty
+# Santa's Speedy Shopper: 1,487 TPS
 
-**Speed Bounty entry: 1,487 TPS mean.** Video, gifts and details: [`submission/`](submission/).
+Speed Bounty entry for the Cerebras x Kimi hackathon.
 
-Everything OpenClaw touches lives in this container and `./state` (gitignored).
+**1,487 tok/s mean · 1,522 p90**, measured by the official OpenClaw speed patch.
+
+- Model: Kimi K3.1 Pro on Cerebras
+- Two model calls: 1,522 and 1,451 tok/s
+- Every gift comes from a live Walmart search, checked after the run
+- Video, screenshot and logs: [`submission/`](submission/)
+
+## The 5 gifts
+
+1. [LEGO Christmas Tree 40573](https://www.walmart.com/ip/LEGO-Iconic-Christmas-Tree-40573/1970544820)
+2. [Fujifilm instax Mini 99](https://www.walmart.com/ip/Fujifilm-instax-Mini-99-Instant-Camera/5625569696)
+3. [JBL Flip 5 speaker](https://www.walmart.com/ip/JBL-Flip-5-Portable-Waterproof-Speaker-Black-Matte/870189368)
+4. [Better Homes & Gardens knit throw](https://www.walmart.com/ip/Better-Homes-and-Gardens-Beige-Cozy-Knit-Throw-50-x-72/2602015509)
+5. [Trouble board game](https://www.walmart.com/ip/Pop-O-Matic-Trouble-Board-Game-for-Kids-and-Family-Ages-5-and-Up-2-4-Players/334768093)
+
+## How it works
+
+1. **Call 1:** the model makes one tool call, `find_gifts`.
+2. **The tool** runs 5 live Walmart searches and formats the results.
+3. **Call 2:** the model copies the results unchanged.
+
+Copying is the fastest thing the model can write, so both calls stay fast.
+
+A small proxy forces call 1 to be a tool call, drops tools from call 2, and uses a short system prompt. It never touches the timing the patch reads.
+
+## Run it
 
 ```sh
-cp .env.example .env   # CEREBRAS_API_KEY, OPENCLAW_GATEWAY_TOKEN
-./oc up                # start gateway (Control UI: http://127.0.0.1:18789/)
-./oc agent --agent main --session-id run1 --json -m "..."   # one agent turn
-./oc sessions tail --session-key agent:main:explicit:run1   # what it did
-./oc shell | logs | down
-./oc nuke              # remove container, image, and all state
+cp .env.example .env    # add CEREBRAS_API_KEY and OPENCLAW_GATEWAY_TOKEN
+cp searxng/settings.example.yml searxng/settings.yml   # set a random secret_key
+./oc up                 # OpenClaw, proxy and SearXNG in Docker
+./run-ui.sh myrun       # one recorded run, saved to runs/myrun/
+./loop.sh 20            # many runs
 ```
 
-Setup already applied to `./state`: onboarding with Cerebras, the `cerebras` and
-`searxng` plugins, `tools.web.search.provider=searxng`,
-`agents.defaults.timeoutSeconds=1800`, `tools.patch.json5` (only web_search + web_fetch), and
-`kimi.patch.json5` (default model `cerebras/moonshotai-kimi-k3.1-pro-trial`).
+Live dashboard: http://127.0.0.1:8081/
 
-## TPS logging proxy
+## What's where
 
-OpenClaw's Cerebras `baseUrl` is set to `http://tpsproxy:8080/v1`. The proxy forwards
-everything to `api.cerebras.ai` and appends one line per reply to `logs/tps.jsonl`, using
-the bounty formula `(output tokens - 1) / (last token time - first token time)`.
+| Path | What it is |
+|---|---|
+| `submission/` | the entry: videos, screenshot, answer, check, prompt, config |
+| `mcp/gift-search.mjs` | the search tool |
+| `tpsproxy/` | proxy, timing log and dashboard |
+| `recorder/` | drives the web UI, records and cuts video |
+| `verify.py` | checks each answer against the live search results |
+| `runs/` | every recorded run, ranked in `runs/leaderboard.md` |
+| `speedrun*.md` | earlier prompt versions we tested |
 
-## Search
-
-`web_search` uses a self-hosted SearXNG container (no API key). Before the first
-`./oc up`, copy `searxng/settings.example.yml` to `searxng/settings.yml` and set a random
-`secret_key`.
-
-## Speed-run instructions
-
-`speedrun.md` is appended to the agent's `state/workspace/AGENTS.md`. It makes the agent
-batch its tool calls into a few replies and copy product-page text verbatim in the final
-answer (copied text decodes much faster than new prose).
-
-## Runs
-
-`./run.sh <id>` (CLI) or `./run-ui.sh <id>` (patched web UI) does one recorded run;
-`./loop.sh [n]` does many. Each run gets its own folder `runs/<id>/`: `answer.md`,
-`verify.txt`, `window.txt`, the `AGENTS.md` it ran with, and for UI runs `final.png` and
-`readout.json`. Videos (`full.mp4`, `demo.mp4`) sit there too but are gitignored.
-`./leaderboard.py` ranks every run into `runs/leaderboard.md`. Per-reply TPS for all runs
-stays in `logs/tps.jsonl`.
-
-## Live dashboard
-
-http://127.0.0.1:8081/ shows each reply's TPS, the best and average, a per-reply chart,
-the streamed output, and a request table. It is served by the proxy over server-sent
-events. **Clear** hides earlier requests for a clean recording.
+Stack: OpenClaw 2026.10.9 with the speed patch, in Docker. Reasoning effort low, temperature 0.6.
