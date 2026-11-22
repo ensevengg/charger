@@ -41,6 +41,19 @@ const TOOL = {
   },
 };
 
+// find_gifts: no arguments; runs the five fixed-category live searches in parallel and returns
+// all five gift blocks as one text, so the final reply is a single copy.
+const CATEGORIES = ["LEGO Christmas building set", "instant camera", "JBL speaker", "cozy throw blanket", "board game"];
+const FIND = {
+  name: "find_gifts",
+  description: "Live Walmart search for the five gift categories. Returns the final answer text.",
+  inputSchema: { type: "object", properties: {} },
+};
+async function findGifts() {
+  const blocks = await Promise.all(CATEGORIES.map((query, i) => giftSearch({ slot: i + 1, query })));
+  return blocks.join("\n\n");
+}
+
 const send = (msg) => process.stdout.write(JSON.stringify(msg) + "\n");
 readline.createInterface({ input: process.stdin }).on("line", async (line) => {
   let m;
@@ -51,7 +64,10 @@ readline.createInterface({ input: process.stdin }).on("line", async (line) => {
     return reply({ protocolVersion: m.params?.protocolVersion || "2025-06-18",
                    capabilities: { tools: {} }, serverInfo: { name: "gifts", version: "1.0.0" } });
   }
-  if (m.method === "tools/list") return reply({ tools: [TOOL] });
+  if (m.method === "tools/list") return reply({ tools: [TOOL, FIND] });
+  if (m.method === "tools/call" && m.params?.name === "find_gifts") {
+    return reply({ content: [{ type: "text", text: await findGifts() }] });
+  }
   if (m.method === "tools/call" && m.params?.name === "gift_search") {
     const text = await giftSearch(m.params.arguments || {});
     return reply({ content: [{ type: "text", text }] });

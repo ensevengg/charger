@@ -161,8 +161,11 @@ def main():
     hits, seen = search_hits(io), set()
     for i, sec in enumerate(sections, 1):
         sec = sec.split("\n| Name |")[0]  # drop trailing summary table
-        blocks = {norm(re.sub(r"<<<[^>]*>>>|Source: [^\n]*|^\s*---\s*$", "", t, flags=re.M)).split("## Gift ", 1)[-1]
-                  for n, _, t in io if n and n.endswith("gift_search")}
+        clean = lambda t: re.sub(r"<<<[^>]*>>>|Source: [^\n]*|^\s*---\s*$", "", t, flags=re.M)
+        blocks = {norm(clean(t)).split("## Gift ", 1)[-1] for n, _, t in io if n and n.endswith("gift_search")}
+        # find_gifts returns all five blocks in one result
+        blocks |= {norm(b) for n, _, t in io if n and n.endswith("find_gifts")
+                   for b in re.split(r"(?m)^## Gift ", clean(t))[1:]}
         if blocks:
             # gift_search format (speedrun4.md): the section must be one tool-returned block, verbatim.
             url = (re.findall(r"https?://[^\s)\]|>]+", sec) or [None])[0]
