@@ -110,6 +110,22 @@ def fetched_pages(io):
     return pages
 
 
+def search_hits(io):
+    """url -> result title (wrapper lines removed) for every web_search result."""
+    hits = {}
+    for name, _, text in io:
+        if name != "web_search":
+            continue
+        try:
+            results = json.loads(text).get("results", [])
+        except ValueError:
+            continue
+        for r in results:
+            title = re.sub(r"<<<[^>]*>>>|Source: Web Search|^\s*---\s*$", "", r.get("title") or "", flags=re.M)
+            hits.setdefault(r.get("url"), title.strip())
+    return hits
+
+
 def norm(s):
     # The trajectory export redacts parts of URL query strings, so compare URLs without them.
     s = re.sub(r"(https?://[^\s?)]+)\?[^\s)]*", r"\1", s)
@@ -142,8 +158,22 @@ def main():
     ok_all = len(sections) == 5
     print(f"{len(sections)} gift sections found" + ("" if ok_all else "  ✗ expected 5"))
 
+    hits, seen = search_hits(io), set()
     for i, sec in enumerate(sections, 1):
         sec = sec.split("\n| Name |")[0]  # drop trailing summary table
+        if not any(l.startswith(">") or l.lower().startswith("price:") for l in sec.splitlines()):
+            # 2-reply format (speedrun2.md): name and URL must match one live search result exactly.
+            url = (re.findall(r"https?://[^\s)\]|>]+", sec) or [None])[0]
+            name = next((l[5:].strip() for l in sec.splitlines() if l.lower().startswith("name:")), "")
+            checks = {"url": bool(url) and url.startswith("https://www.walmart.com/ip/") and url in hits,
+                      "name": bool(name) and norm(name) == norm(hits.get(url, "")),
+                      "unique": url not in seen}
+            seen.add(url)
+            ok_all &= all(checks.values())
+            print(f"Gift {i}: " + "  ".join(f"{k} {'✓' if v else '✗'}" for k, v in checks.items()) + f"  {url}")
+            if not checks["name"]:
+                print(f"    name {name[:90]!r} vs search title {hits.get(url, '')[:90]!r}")
+            continue
         urls = re.findall(r"https?://[^\s)\]|>]+", sec)
         url = urls[0] if urls else None
         page = pages.get(url, "")
