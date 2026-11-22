@@ -1,0 +1,8 @@
+patch readout: 1,120 tok/s mean over 2 calls (1,163, 1,077)
+5 gift sections found
+Gift 1: url ✓  name ✓  snippet ✓  unique ✓  https://www.walmart.com/ip/LEGO-Iconic-Christmas-Tree-40573/1970544820
+Gift 2: url ✓  name ✓  snippet ✓  unique ✓  https://www.walmart.com/ip/FUJIFILM-INSTAX-MINI-12-Instant-Film-Camera-Clay-White/1020921431
+Gift 3: url ✓  name ✓  snippet ✓  unique ✓  https://www.walmart.com/ip/JBL-Flip-5-Portable-Waterproof-Speaker-Black-Matte/870189368
+Gift 4: url ✓  name ✓  snippet ✓  unique ✓  https://www.walmart.com/ip/Better-Homes-and-Gardens-Beige-Cozy-Knit-Throw-50-x-72/2602015509
+Gift 5: url ✓  name ✓  snippet ✓  unique ✓  https://www.walmart.com/ip/Pop-O-Matic-Trouble-Board-Game-for-Kids-and-Family-Ages-5-and-Up-2-4-Players/334768093
+PASS
