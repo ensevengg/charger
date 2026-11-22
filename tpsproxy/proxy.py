@@ -33,6 +33,7 @@ def rewrite(body):
       first_tool_required  tool_choice "required" on the first call (no tool results yet)
       final_no_tools       drop the tool list once tool results are in (the copy-only final reply)
       temperature          override the sampling temperature
+      system_file          file next to the log whose text replaces the system message
     """
     try:
         cfg = json.load(open(os.path.join(os.path.dirname(LOG), "rewrite.json")))
@@ -49,6 +50,16 @@ def rewrite(body):
         req.pop("tools", None)
         req.pop("tool_choice", None)
         req.pop("parallel_tool_calls", None)
+    if cfg.get("system_file"):
+        # Replace OpenClaw's long system prompt with a compact one (our run instructions included).
+        try:
+            text = open(os.path.join(os.path.dirname(LOG), cfg["system_file"])).read()
+            for m in req.get("messages", []):
+                if m.get("role") in ("system", "developer"):
+                    m["content"] = text
+                    break
+        except OSError:
+            pass
     if "temperature" in cfg:
         req["temperature"] = cfg["temperature"]
     return json.dumps(req).encode()
