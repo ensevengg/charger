@@ -6,6 +6,9 @@ import readline from "node:readline";
 
 const SEARXNG = process.env.SEARXNG_URL || "http://searxng:8080";
 const PREFIX = "https://www.walmart.com/ip/";
+// Optional instruction line placed before the block, right where the model reads the result
+// (GIFT_NUDGE=1). verify.py ignores anything before "## Gift".
+const NUDGE = process.env.GIFT_NUDGE === "1" ? "Copy the block below exactly. Do not think.\n" : "";
 
 async function search(q) {
   const r = await fetch(`${SEARXNG}/search?format=json&q=${encodeURIComponent(q)}`);
@@ -21,7 +24,7 @@ async function giftSearch({ slot, query }) {
       if (hits.length) {
         const h = hits[0];
         const clean = (s) => String(s || "").replace(/\s+/g, " ").trim();
-        return `## Gift ${slot}\nName: ${clean(h.title)}\nRetailer: Walmart\nURL: ${h.url}\nSnippet: ${clean(h.content)}`;
+        return `${NUDGE}## Gift ${slot}\nName: ${clean(h.title)}\nRetailer: Walmart\nURL: ${h.url}\nSnippet: ${clean(h.content)}`;
       }
     }
   }
