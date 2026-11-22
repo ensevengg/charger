@@ -27,6 +27,33 @@ def _next_id_start():
 _clients, _lock, _ids = set(), threading.Lock(), itertools.count(_next_id_start())
 
 
+def rewrite(body):
+    """Optional request changes for experiments, read from /logs/rewrite.json on every request
+    (absent file = pass through unchanged). Keys:
+      first_tool_required  tool_choice "required" on the first call (no tool results yet)
+      final_no_tools       drop the tool list once tool results are in (the copy-only final reply)
+      temperature          override the sampling temperature
+    """
+    try:
+        cfg = json.load(open(os.path.join(os.path.dirname(LOG), "rewrite.json")))
+    except (OSError, ValueError):
+        return body
+    try:
+        req = json.loads(body)
+    except ValueError:
+        return body
+    has_results = any(m.get("role") == "tool" for m in req.get("messages", []))
+    if cfg.get("first_tool_required") and req.get("tools") and not has_results:
+        req["tool_choice"] = "required"
+    if cfg.get("final_no_tools") and has_results and req.get("messages", [{}])[-1].get("role") == "tool":
+        req.pop("tools", None)
+        req.pop("tool_choice", None)
+        req.pop("parallel_tool_calls", None)
+    if "temperature" in cfg:
+        req["temperature"] = cfg["temperature"]
+    return json.dumps(req).encode()
+
+
 def emit(ev):
     data = json.dumps(ev)
     with _lock:
@@ -104,9 +131,11 @@ class H(http.server.BaseHTTPRequestHandler):
         rid = next(_ids)
         sent = {}
         if is_chat:
+            body = rewrite(body)
             try:
                 req = json.loads(body)
-                sent = {k: req[k] for k in ("reasoning_effort", "temperature", "top_p", "max_completion_tokens", "max_tokens") if k in req}
+                sent = {k: req[k] for k in ("reasoning_effort", "temperature", "top_p", "max_completion_tokens", "max_tokens", "tool_choice") if k in req}
+                sent["tools"] = len(req.get("tools") or [])
             except ValueError:
                 pass
         t0 = time.time()
