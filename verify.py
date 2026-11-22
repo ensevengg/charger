@@ -74,8 +74,22 @@ def norm(s):
 def main():
     sid = sys.argv[1]
     here = os.path.dirname(os.path.abspath(__file__))
-    final = open(sys.argv[2] if len(sys.argv) > 2 else f"{here}/logs/runs/{sid}.md").read()
-    io = tool_io(export(sid))
+    events = export(sid)
+    path = sys.argv[2] if len(sys.argv) > 2 else f"{here}/logs/runs/{sid}.md"
+    msgs = [e["data"]["message"] for e in events
+            if e.get("source") == "transcript" and e["type"] == "assistant.message"]
+    if os.path.exists(path):
+        final = open(path).read()
+    else:  # web UI runs: take the last assistant reply from the transcript
+        final = "".join(c.get("text", "") for c in (msgs[-1]["content"] if msgs else []) if c.get("type") == "text")
+        open(path, "w").write(final)
+    # The speed patch's headline: mean over model calls of completion tokens / server decode time.
+    rates = [g["outputTokens"] / (g["completionMs"] / 1000) for g in (m.get("serverGeneration") for m in msgs)
+             if g and g.get("completionMs")]
+    if rates:
+        print(f"patch readout: {sum(rates) / len(rates):,.0f} tok/s mean over {len(rates)} calls "
+              f"({', '.join(f'{r:,.0f}' for r in rates)})")
+    io = tool_io(events)
     pages = fetched_pages(io)
 
     sections = re.split(r"(?m)^## Gift \d+\s*$", final)[1:]

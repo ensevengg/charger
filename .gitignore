@@ -3,3 +3,5 @@ state/
 logs/
 searxng/settings.yml
 __pycache__/
+build/
+state-patched/
