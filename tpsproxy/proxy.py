@@ -98,9 +98,21 @@ class H(http.server.BaseHTTPRequestHandler):
         t0 = time.time()
         if is_chat:
             emit({"type": "start", "id": rid, "t": t0})
-        c = http.client.HTTPSConnection(UP, timeout=600)
-        c.request(method, self.path, body=body, headers=hdrs)
-        r = c.getresponse()
+        # Retry connection failures (DNS blips, network unreachable): nothing has been sent yet.
+        for attempt in range(5):
+            try:
+                c = http.client.HTTPSConnection(UP, timeout=600)
+                c.request(method, self.path, body=body, headers=hdrs)
+                r = c.getresponse()
+                break
+            except OSError as e:
+                print(json.dumps({"upstream_retry": attempt + 1, "error": str(e)[:120]}), flush=True)
+                if attempt == 4:
+                    if is_chat:
+                        emit({"type": "fail", "id": rid, "status": 502})
+                    self.send_error(502, "upstream unreachable")
+                    return
+                time.sleep(2 * (attempt + 1))
         self.send_response(r.status)
         for k, v in r.getheaders():
             if k.lower() not in ("transfer-encoding", "content-length", "connection", "content-encoding"):
