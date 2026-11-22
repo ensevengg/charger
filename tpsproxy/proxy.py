@@ -45,7 +45,7 @@ def rewrite(body):
     has_results = any(m.get("role") == "tool" for m in req.get("messages", []))
     if cfg.get("first_tool_required") and req.get("tools") and not has_results:
         req["tool_choice"] = "required"
-    if cfg.get("final_no_tools") and has_results and req.get("messages", [{}])[-1].get("role") == "tool":
+    if cfg.get("final_no_tools") and has_results:
         req.pop("tools", None)
         req.pop("tool_choice", None)
         req.pop("parallel_tool_calls", None)
